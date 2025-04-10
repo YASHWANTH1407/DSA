@@ -128,6 +128,80 @@ class Solution
     }
 
 
+
+3>
+/*
+Given number of vertices V and edges E, a graph is created and represented in 
+the form of adjacency list. Given the graph, perform a BFS traversal of the graph.
+Note: you just need to implement the bfs() method.
+
+case=1
+input=5 7
+0 1
+0 4
+1 2
+1 3
+1 4
+2 3
+3 4
+0
+output=[0, 1, 4, 2, 3]
+Explanation: First line: number of vertices followed by number of edges, 
+followed by edges, followed by starting node.
+
+case=2
+input=6 10
+1 0
+0 2
+1 0
+1 3
+2 0
+2 3
+3 4
+3 5
+4 3
+5 3
+0
+output=[0, 1, 2, 3, 4, 5]
+
+class Graph
+{
+    int V;
+    LinkedList<Integer>[] adjList;
+}
+*/
+
+Solution:
+
+import java.util.*;
+class Solution
+{
+    public void bfs(Graph graph, int start, List<Integer> result)
+    {
+        // Implement your code here
+        Queue<Integer> q=new LinkedList<>();
+         boolean visited[]=new boolean[graph.V];
+        q.offer(start);
+        while(!q.isEmpty()){
+            int node=q.poll();
+            if(!visited[node]){
+                visited[node]=true;
+                result.add(node);
+            
+            for(int neigh:graph.adjList[node]){
+                if(!visited[neigh]){
+                    // visited[neigh]=true;
+                    q.offer(neigh);
+                }
+            }
+            }
+            
+        }
+    }
+}
+
+
+
     
     
 
