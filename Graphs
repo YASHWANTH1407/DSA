@@ -201,7 +201,177 @@ class Solution
 }
 
 
+Q 4>
+No of conncected components using the dfs
+/*
+You have a graph of n nodes. You are given an integer n and an array edge 
+where edges[i] = [ai, bi] indicates that there is an edge between ai and bi in 
+the graph.
 
+Return the number of connected components in the graph using DFS.
+
+Note: The boilerplate code to create graph represented as adjacency list from 
+given vertices and edges is provided, you just need to implement the 
+countConnectedComponents() method.
+
+Sample testcase
+ 
+case=1
+input=5 3
+0 1
+1 2
+3 4
+output=2
+
+Explanation:
+Input: first line contains ‘n’ number of nodes and ‘m’ number of edges, 
+followed by value for m edges.
+Output: 2. First component having nodes 0, 1, 2 and second component having 
+nodes 3, 4
+
+ 
+case=2
+input=5 4
+0 1
+1 2
+2 3
+3 4
+output=1
+
+class Graph
+{
+    int V;
+    LinkedList<Integer>[] adjList;
+}
+*/
+
+import java.util.Stack;
+import java.util.*;
+class Solution
+{
+    int countConnectedComponents(Graph graph)
+    {
+        // Implement your code here
+        boolean visited[] = new boolean[graph.V];
+        
+        int count=0;
+        for(int i=0;i<graph.V;i++)
+        {
+            if(!visited[i])
+            {
+                dfs(graph,i,visited);
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    void  dfs(Graph graph,int i,boolean[] visited)
+    {
+        Deque<Integer> st = new ArrayDeque<>();
+        st.push(i);
+        while(!st.isEmpty())
+        {
+            int v = st.pop();
+            if(!visited[v])
+            {
+                visited[v]= true;
+
+                for(int neighbour: graph.adjList[v])
+                {
+                    if(!visited[neighbour])
+                    {
+                        st.push(neighbour);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+Q 5>
+No of connected componenets using the BFS
+
+
+/*
+You have a graph of n nodes. You are given an integer n and an array edge 
+where edges[i] = [ai, bi] indicates that there is an edge between ai and bi in 
+the graph.
+
+Return the number of connected components in the graph using BFS.
+
+Note: The boilerplate code to create graph represented as adjacency list from 
+given vertices and edges is provided, you just need to implement the 
+countConnectedComponents() method.
+
+Sample testcase
+ 
+case=1
+input=5 3
+0 1
+1 2
+3 4
+output=2
+
+Explanation:
+Input: first line contains ‘n’ number of nodes and ‘m’ number of edges, 
+followed by value for m edges.
+Output: 2. First component having nodes 0, 1, 2 and second component having 
+nodes 3, 4
+
+
+case=2
+input=5 4
+0 1
+1 2
+2 3
+3 4
+output=1
+
+class Graph
+{
+    int V;
+    LinkedList<Integer>[] adjList;
+}
+*/
+
+import java.util.*;
+class Solution
+{
+    static void bfs(Graph graph,int start,boolean visited[]){
+        Queue<Integer> q=new LinkedList<>();
+        q.offer(start);
+        while(!q.isEmpty()){
+            int x=q.poll();
+            if(!visited[x]){
+                visited[x]=true;
+                for(int neigh:graph.adjList[x]){
+                    if(!visited[neigh]){
+                        q.offer(neigh);
+                    }
+                }
+            }
+        }
+    }
+
+    int countConnectedComponents(Graph graph)
+    {
+        // Implement your code here
+        boolean visited[]=new boolean[graph.V];
+        int count=0;
+        for(int i=0;i<graph.V;i++){
+            if(!visited[i]){
+            
+            bfs(graph,i,visited);
+            count++;
+            }
+        }
+return count;
+    }
+}
     
     
 
