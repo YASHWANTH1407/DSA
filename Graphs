@@ -443,3 +443,132 @@ class Solution {
 }
 
 
+Solution 2:
+import java.util.*;
+public class test{
+    public static int maxAreaOfIsland(int[][] grid) {
+        int maxarea = 0;
+        for (int row = 0; row < grid.length; row++) {
+            for (int col = 0; col < grid[0].length; col++) {
+               if (grid[row][col] == 1){
+                    maxarea= Math.max(maxarea, dfs(grid, row, col));
+                     }
+            }
+      }
+        return maxarea;
+    }
+    public static int dfs(int[][] grid, int row, int col) {
+        if (row < 0||row >= grid.length ||col < 0 ||col >= grid[0].length ||grid[row][col]== 0) {
+           return 0;
+           }
+        grid[row][col] = 0;
+        int area = 1; 
+        area += dfs(grid, row + 1, col); 
+        area += dfs(grid, row - 1, col); 
+        area += dfs(grid, row, col + 1); 
+        area += dfs(grid, row, col - 1); 
+        return area;
+        }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int r= sc.nextInt();
+        int c = sc.nextInt();
+        int mat[][] = new int[r][c];
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                mat[i][j]= sc.nextInt();
+                    }
+                }
+        System.out.print(maxAreaOfIsland(mat));
+        }
+    }   
+
+
+Q 8>
+/*
+There is a bi-directional graph with n vertices, where each vertex is labeled 
+from 0 to n - 1 (inclusive). The edges in the graph are represented as a 
+2D integer array edges, where each edges[i] = [ui, vi] denotes a bi-directional 
+edge between vertex ui and vertex vi. Every vertex pair is connected by at most 
+one edge, and no vertex has an edge to itself.
+
+You want to determine if there is a valid path that exists from vertex source 
+to vertex destination.
+
+Given edges and the integers n, source, and destination, return true if there 
+is a valid path from source to destination, or false otherwise.
+
+Note: Given number of vertices V and edges E, a graph is created and 
+represented in the form of adjacency list. Given the graph, perform a 
+BFS traversal of the graph.
+Note: you just need to implement the dfs() method.
+
+case=1
+input=3 3
+0 1
+1 2
+2 0
+0 2
+output=true
+
+Explanation:
+Input: n = 3, edges = [[0,1],[1,2],[2,0]], source = 0, destination = 2
+Output: true, there are two paths from vertex 0 to vertex 2
+- 0 → 1 → 2
+- 0 → 2
+
+case=2
+input=6 5
+0 1
+0 2
+3 5
+5 4
+4 3
+0 5
+output=false
+
+Explanation:
+Input: n = 6, edges = [[0,1],[0,2],[3,5],[5,4],[4,3]], source = 0, 
+destination = 5
+Output: false, there is no path from vertex 0 to vertex 5.
+
+class Graph
+{
+    int V;
+    LinkedList<Integer>[] adjList;
+}
+*/
+
+import java.util.*;
+class Solution
+{
+    public  boolean bfs(Graph graph,int source,int dest){
+        Queue<Integer> q=new LinkedList<>();
+        boolean visited[]=new boolean[graph.V];
+        q.offer(source);
+        while(!q.isEmpty()){
+            int node=q.poll();
+            if(!visited[node]){
+                visited[node]=true;
+                for(int neigh:graph.adjList[node]){
+                    if(!visited[neigh]){
+                        // visited[neigh]=true;
+                        q.offer(neigh);
+                    }
+                }
+            }
+        }
+        if(visited[source]==true && visited[dest]==true){
+            return true;
+            
+        }
+        return false;
+    }
+    boolean isValidPathExist(Graph graph, int source, int destination)
+    {
+        // Implement your code her
+        return bfs(graph,source,destination);
+    }
+}
+
+
