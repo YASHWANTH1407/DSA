@@ -572,3 +572,178 @@ class Solution
 }
 
 
+
+
+Q 10>
+// import java.util.*;
+// public class test{
+//      public static int find(int trust[][],int number,int relations){
+//          HashMap<Integer,Integer> hm=new HashMap<>();
+//          for(int i=0;i<relations;i++){
+//              for(int j=0;j<2;j++){
+//                  int x=trust[i][j];
+//                  hm.put(x,hm.getOrDefault(x,0)+1);
+//              }
+//          }
+//          for(Map.Entry<Integer, Integer>entry:hm.entrySet()){
+//              if(entry.getValue()==relations){
+//                  return entry.getKey()+1;
+//              }
+//          }
+//          return -1;
+//      }
+    
+//     public static void main(String[] args){
+//         Scanner sc=new Scanner(System.in);
+//         int number=sc.nextInt();
+//         int relations=sc.nextInt();
+//         int [][] trust=new int[number][2];
+//         for(int i=0;i<relations;i++){
+//             for(int j=0;j<2;j++){
+//                 trust[i][j]=sc.nextInt();
+//             }
+//         }
+        
+//         System.out.println(find(trust,number,relations));
+//     }
+// }
+
+
+import java.util.*;
+
+class test
+
+
+{
+
+
+    static int findJudge(int n,int [][] trust)
+    
+
+{
+
+
+        int[] trustCounts = new int[n+1];
+        
+        for(int [] relation: trust)
+        
+
+{
+
+
+            trustCounts[relation[0]]--;
+            trustCounts[relation[1]]++;
+        
+
+}
+        
+        for(int i=1;i<=n;i++)
+        
+
+{
+
+
+            if(trustCounts[i]==n-1)
+            
+
+{
+
+
+                return i;
+            
+
+}
+        
+
+}
+        return -1;
+    
+
+}
+    
+    public static void main(String args[])
+    
+
+{
+
+
+        Scanner sc = new Scanner(System.in);
+        
+        int peo= sc.nextInt();
+        int rel= sc.nextInt();
+        
+        int trust[][] = new int[rel][2];
+        for(int i=0;i<rel;i++)
+        
+
+{
+
+
+            trust[i][0]= sc.nextInt();
+            trust[i][1]=sc.nextInt();
+        
+
+}
+        
+        System.out.println(findJudge(peo,trust));
+    
+
+}
+
+}
+
+
+Q 11>
+There is a ball in a maze with empty spaces (represented as 0) and 
+walls (represented as 1). The ball can go through the empty spaces by 
+rolling up, down, left or right, but it won't stop rolling until hitting a wall. 
+When the ball stops, it could choose the next direction.
+
+Given the m x n maze, the ball's start position and the destination, where 
+start = [startrow, startcol] and destination = [destinationrow, destinationcol],
+return true if the ball can stop at the destination, otherwise return false.
+
+You may assume that the borders of the maze are all walls (see examples).
+
+Sample test case
+case=1
+input=5 5
+0 0 1 0 0
+0 0 0 0 0
+0 0 0 1 0
+1 1 0 1 1
+0 0 0 0 0
+0 4
+4 4
+output=true
+
+Explanation: 
+Input: Line 1, number of rows and columns, followed by values for each cell, 
+followed by start cell, finally destination cell.
+Output: true, One possible way is : 
+left -> down -> left -> down -> right -> down -> right.
+
+case=2
+input=5 5
+0 0 1 0 0
+0 0 0 0 0
+0 0 0 1 0
+1 1 0 1 1
+0 0 0 0 0
+0 4
+3 2
+output=false
+Explanation: There is no way for the ball to stop at the destination. 
+Notice that you can pass through the destination but you cannot stop there.
+
+case=3
+input=5 5
+0 0 0 0 0
+1 1 0 0 1
+0 0 0 0 0
+0 1 0 0 1
+0 1 0 0 0
+4 3
+0 1
+output=false
+
