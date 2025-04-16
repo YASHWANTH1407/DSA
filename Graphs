@@ -747,3 +747,213 @@ input=5 5
 0 1
 output=false
 
+
+10>
+There is a ball in a maze with empty spaces (represented as 0) and 
+walls (represented as 1). The ball can go through the empty spaces by 
+rolling up, down, left or right, but it won't stop rolling until hitting a wall. 
+When the ball stops, it could choose the next direction.
+
+Given the m x n maze, the ball's start position and the destination, 
+where start = [startrow, startcol] and 
+destination = [destinationrow, destinationcol], 
+return the shortest distance for the ball to stop at the destination. 
+If the ball cannot stop at destination, return -1.
+
+The distance is the number of empty spaces traveled by the ball from the 
+start position (excluded) to the destination (included).
+
+You may assume that the borders of the maze are all walls (see examples).
+
+Sample test case
+case=1
+input=5 5
+0 0 1 0 0
+0 0 0 0 0
+0 0 0 1 0
+1 1 0 1 1
+0 0 0 0 0
+0 4
+4 4
+output=12
+
+Explanation: 
+Input: Line 1, number of rows and columns, followed by values for each cell, 
+followed by start cell, finally destination cell.
+Output: 12, One possible way is : left -> down -> left -> down -> right -> down -> right.
+The length of the path is 1 + 1 + 3 + 1 + 2 + 2 + 2 = 12.
+
+case=2
+input=5 5
+0 0 1 0 0
+0 0 0 0 0
+0 0 0 1 0
+1 1 0 1 1
+0 0 0 0 0
+0 4
+3 2
+output=-1
+Explanation: There is no way for the ball to stop at the destination. 
+Notice that you can pass through the destination but you cannot stop there.
+
+case=3
+input=5 5
+0 0 0 0 0
+1 1 0 0 1
+0 0 0 0 0
+0 1 0 0 1
+0 1 0 0 0
+4 3
+0 1
+output=-1
+
+
+Solution:
+
+// import java.util.*;
+// public class test{
+//     public static int shortestDistance(int [][] maze,int src[],int dest[]){
+//         int rows=maze.length;
+//         int cols=maze[0].length;
+//         //Distance matrix initialized to "infinity"(unreachable initially)
+//         int distance[][]=new int[rows][cols];
+//         for(int [] row:distance){
+//             Arrays.fill(row,Integer.MAX_VALUE);
+//         }
+//         //distsnce to the starting cell is 0
+//         distance[src[0]][src[1]]=0;
+//         //start DFS travesal to compute shortest distances
+//         dfs(maze,src,distance);
+//         //If destination is still unreachable,return -1
+//         if(distance[dest[0]][dest[1]]==Integer.MAX_VALUE){
+//             return -1;
+//         }
+//         else{  //otherwise return to the shortest distace to the desinaiton
+//             return distance[dest[0]][dest[1]];
+//         } 
+        
+//     }
+//     public static  void dfs(int maze[][],int src[],int dist[][]){
+//         int rows=maze.length;
+//         int cols=maze[0].length;
+        
+//         int [][] dirs={{1,0},{-1,0},{0,1},{0,-1}};
+//         int count=0;
+//         for(int i=0;i<4;i++){
+//             int r=src[0]+dirs[i][0];
+//             int c=src[1]+dirs[i][1];
+            
+//             //keep moving in current direction until hitting a wall or edge
+//             while(r>=0 && r<rows && c>=0 && c<cols && maze[r][c]==0){
+//                 r=r+dirs[i][0];
+//                 c=c+dirs[i][1];
+//                 count++;
+//             }
+//             //rollback one step as last move hti the boundary/wall
+//             int [] newCur=new int[]{r-dirs[i][0],c-dirs[i][1]};
+            
+//             //If the new path is shorter update and recurse
+//             if(dist[src[0]][src[1]]+count <dist[newCur[0]][newCur[1]]){
+//                 dist[newCur[0]][newCur[1]]=dist[src[0]][src[1]]+count;
+//                 dfs(maze,newCur,dist); //recursively explore further from the new cell
+//             }
+//         }
+        
+        
+//     }
+    
+//     public static void main(String[] args){
+//         Scanner sc=new Scanner(System.in);
+//         int rows=sc.nextInt();
+//         int cols=sc.nextInt();
+//         int arr[][]=new int[rows][cols];
+//         for(int i=0;i<rows;i++){
+//             for(int j=0;j<cols;j++){
+//                 arr[i][j]=sc.nextInt();
+//             }
+//         }
+//         int src[]=new int[]{sc.nextInt(),sc.nextInt()};
+//         int dest[]=new int[]{sc.nextInt(),sc.nextInt()};
+        
+//         int result=shortestDistance(arr,src,dest);
+//         System.out.println(result);
+//     }
+// }
+
+
+
+import java.util.*;
+
+public class test{
+    public static void main(String args[]){
+        Scanner sc = new Scanner(System.in);
+        int m= sc.nextInt();
+        int n= sc.nextInt();
+        
+        int[][] maze= new int[m][n];
+        
+        for(int i=0;i<=m-1;i++){
+            for(int j=0;j<=n-1;j++){
+                maze[i][j]= sc.nextInt();
+            }
+        }
+        int sr=sc.nextInt();
+        int scc= sc.nextInt();
+        int dr= sc.nextInt();
+        int dc= sc.nextInt();
+        
+        int[] curCell={sr, scc};
+        int[] dest= {dr, dc};
+        
+        
+        
+        System.out.println(minDis(maze, curCell, dest));
+    }
+    
+    static int minDis(int[][] grid, int[] curCell, int[] dest){
+        
+        int row=grid.length;
+        int col= grid[0].length;
+        
+        int[][] distance= new int[row][col];
+        
+        for(int[] roww: distance){
+            Arrays.fill(roww, Integer.MAX_VALUE);
+        }
+        distance[curCell[0]][curCell[1]]=0;
+        
+        dfs(grid, curCell, distance);
+        
+        if(distance[dest[0]][dest[1]]== Integer.MAX_VALUE){
+            return -1;
+        }
+        
+        return distance[dest[0]][dest[1]];
+    }
+    
+    static void dfs(int[][] grid, int[] curCell, int[][] distance){
+        int rowlen= grid.length;
+        int collen= grid[0].length;
+        
+        int[][] direction={{1,0}, {-1,0}, {0,1}, {0, -1}};
+        for(int i=0;i<4;i++){
+            int r= curCell[0]+direction[i][0];
+            int c= curCell[1]+direction[i][1];
+            
+            int count=0;
+            
+            while(r>=0 && r<rowlen && c>=0 && c<collen && grid[r][c]==0){
+                r= r+direction[i][0];
+                c= c+direction[i][1];
+                count++;
+            }
+            
+            int[] newCur= new int[] {r-direction[i][0], c- direction[i][1]};
+            
+            if(distance[curCell[0]][curCell[1]]+count< distance[newCur[0]][newCur[1]]){
+                distance[newCur[0]][newCur[1]]= distance[curCell[0]][curCell[1]]+count;
+                dfs(grid, newCur, distance);
+            }
+        }
+    }
+}
