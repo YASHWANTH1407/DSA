@@ -85,29 +85,30 @@ output=9999
 
 Explanation: It is better not to apply any change.
 
-
-
-
-
+Solution:
 import java.util.*;
-public class test{
-    public static void main(String[] args){
+public class GreedyAlgorithms {
+    public static void main(String[] args) {
         Scanner sc=new Scanner(System.in);
-        int n=sc.nextInt();
-        int max=n;
-        while(n>0){
-            int last=n%10;
-            if(last==9){
-                n=n-last;
-                max=Math.max(n,max);
+        String str=sc.nextLine(); //9669
+        int max=Integer.parseInt(str);
+        int n=str.length();
+        StringBuilder sb=new StringBuilder(str);
+        for(int i=0;i<n;i++){
+            char ch=str.charAt(i);
+            if(ch=='6') {
+                sb.setCharAt(i,'9');
+                int newval=Integer.parseInt(sb.toString());
+                max=Math.max(newval,max);
+
             }
-            else if(last==6){
-                last=9;
-                max=Math.max(n,max);
+            if(ch=='6') {
+                sb.setCharAt(i,'6');
+                int newval1=Integer.parseInt(sb.toString());
+                max=Math.max(newval1,max);
             }
-            n=n/10;
-            
         }
         System.out.println(max);
+
     }
 }
