@@ -441,3 +441,178 @@ public class test{
         System.out.println(mini(arr));
     }
 }
+
+You are given an integer num. You can swap two digits at most once to get 
+the maximum valued number.
+Return the maximum valued number you can get.
+
+case=1
+input=2736
+output=7236
+Explanation: Swap the number 2 and the number 7.
+
+case=2
+input=9973
+output=9973
+Explanation: No swap.
+
+
+Soolution:
+import java.util.*;
+
+public class test 
+
+{
+
+
+    public static String maxvalue(char arr[]) 
+
+{
+
+
+        int n = arr.length;
+        int[] last = new int[10]; // last occurrence of digits 0-9
+
+        for (int i = 0; i < n; i++) 
+
+{
+
+
+            last[arr[i] - '0'] = i;
+        
+
+}
+
+        for (int i = 0; i < n; i++) 
+
+{
+
+
+            int current = arr[i] - '0';
+
+            // check from 9 to current+1 for better swap
+            for (int d = 9; d > current; d--) 
+
+{
+
+
+                if (last[d] > i) 
+
+{
+
+
+                    // swap and return
+                    char temp = arr[i];
+                    arr[i] = arr[last[d]];
+                    arr[last[d]] = temp;
+                    return new String(arr);
+                
+
+}
+            
+
+}
+        
+
+}
+
+        return new String(arr); // already max
+    
+
+}
+
+    public static void main(String[] args) 
+
+{
+
+
+        Scanner sc = new Scanner(System.in);
+        String str = sc.nextLine();
+        char arr[] = str.toCharArray();
+        System.out.println(maxvalue(arr));
+    
+
+}
+
+}
+
+
+Given a list of non-negative integers nums, arrange them such that they form 
+the largest number and return it.
+Since the result may be very large, so you need to return a string instead 
+of an integer.
+
+case=1
+input=2
+10 2
+output=210
+
+case=2
+input=5
+3 30 34 5 9
+output=9534330
+
+import java.util.*;
+public class test{
+    public static String maxnumber(String arr[]){
+        int n=arr.length;
+        Arrays.sort(arr,(a,b)->(b+a).compareTo(a+b));
+        StringBuilder sb=new StringBuilder();
+        for(String x:arr){
+            sb.append(x);
+        }
+        return sb.toString();
+        
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        String arr[]=new String[n];
+        for(int i=0;i<n;i++){
+            arr[i]=String.valueOf(sc.nextInt());
+        }
+        
+        System.out.println(maxnumber(arr));
+    }
+}
+
+Given a positive integer n, you can apply one of the following operations:
+
+If n is even, replace n with n / 2.
+If n is odd, replace n with either n + 1 or n - 1.
+Return the minimum number of operations needed for n to become 1.
+
+case=1
+input=8
+output=3
+Explanation: 8 -> 4 -> 2 -> 1
+
+case=2
+input=7
+output=4
+Explanation: 7 -> 8 -> 4 -> 2 -> 1
+or 7 -> 6 -> 3 -> 2 -> 1
+
+case=3
+input=4
+output=2
+Explanation: 4 -> 2 -> 1
+import java.util.*;
+public class test{
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        if(n%2==0){
+            evencount(n);
+        }
+        if(n%2!=0){
+            oddcount(n);
+        }
+        
+    }
+}
+
+
+
+
+
