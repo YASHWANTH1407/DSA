@@ -1,0 +1,851 @@
+8 4 6 2 3   DAY 14 questions on  linked list (ALL Operations for the leetcode problems)’
+
+
+1> Given an array of integers, create a linked list from it and 
+display the list. To achieve this you need to create a 
+LinkedList class having two functionality, 
+1. addNode(), to add a node to the list and 
+2. displayList(), to display the contents of the list.
+
+Sample test case
+case=1
+input=4
+4 16 23 55
+output=4->16->23->55->
+
+case=2
+input=5
+3 6 2 8 7
+output=3->6->2->8->7->
+
+solution:
+
+import java.util.*;
+class Node{
+    int data;
+    Node next;
+    Node(int data){
+        this.data=data;
+        this.next=null;
+    }
+}
+ class test{
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        LinkedList list=new LinkedList();
+        for(int i=0;i<n;i++){
+            list.addNode(sc.nextInt());
+        }
+        list.displaylist();
+        
+    }
+   static class LinkedList{
+        Node head;
+        LinkedList(){
+            head=null;
+        }
+        void addNode(int data){
+            Node newNode=new Node(data);
+            if(head==null){
+                head=newNode;
+                return;
+            }
+            Node curr=head;
+            while(curr.next!=null){
+                curr=curr.next;
+            }
+            curr.next=newNode;
+        }
+        void displaylist(){
+            Node curr=head;
+            while(curr!=null){
+                System.out.printf("%d->",curr.data);
+                curr=curr.next;
+            }
+        }
+    }
+}
+
+2>/*
+Given a linked list and value for new node, insert the new node 
+at the beginning of the linked list.
+Note: You are provided with boilerplate code for LinkedList 
+with functions to addNode() and displayList(), you just need 
+to implement the method insertAtBeginning().
+
+Sample test case
+case=1
+input=4
+4 16 23 55
+18
+output=18->4->16->23->55->
+
+Explanation:
+Input:
+Line1: Number of elements
+Line2: Value for each element in list
+Line3: Element to be inserted at beginning of the list
+Output:
+List with new element inserted at beginning of list
+
+case=2
+input=5
+3 6 2 8 7
+4
+output=4->3->6->2->8->7->
+
+*/
+
+Code:
+
+import java.util.*;
+class Node
+{
+    int data;
+    Node next;
+    Node(int data)
+    {
+        this.data = data;
+        this.next = null;
+    }
+}
+class LinkedList
+{
+    Node head;
+
+    LinkedList()
+    {
+        head = null;
+    }
+    void addNode(int data)
+    {
+        Node newNode = new Node(data);
+        if(head == null)
+        {
+            head = newNode;
+            return;
+        }
+
+        Node cur = head;
+        while(cur.next != null)
+        {
+            cur = cur.next;
+        }
+        cur.next = newNode;
+
+    }
+    void insertAtBeginning(int data)
+    {
+        // Implement your code here
+        Node newNode=new Node(data);
+        newNode.next=head;
+        head=newNode;
+    }
+    void displayList()
+    {
+        Node cur = head;
+        while(cur!= null)
+        {
+            System.out.printf("%d->", cur.data);
+            cur = cur.next;
+        }
+    }
+}
+class Solution
+{
+    public static void main(String[] args)
+    {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        LinkedList list = new LinkedList();
+        for(int i=0; i<n; i++)
+        {
+            list.addNode(sc.nextInt());
+        }
+        int x = sc.nextInt();
+        list.insertAtBeginning(x);
+        list.displayList();
+    }
+}
+
+3>/*
+
+Given a linked list, a key node and value for new node, insert 
+the new node after the key node in the linked list.
+Note: You are provided with boilerplate code for LinkedList 
+with functions to addNode() and displayList(), you just need 
+to implement the method insertAfter().
+
+Sample test case
+
+case=1
+input=4
+4 16 23 55
+16 87
+output=4->16->23->55->
+4->16->87->23->55->
+
+Explanation:
+Input:
+Line1: Number of elements
+Line2: Value for each element in list
+Line3: Key Node followed by value for new Node
+Output:
+List with new element inserted after the key Node
+
+case=2
+input=4
+4 16 23 55
+4 87
+output=4->87->16->23->55->
+
+case=3
+input=4
+4 16 23 55
+55 87
+output=4->16->23->55->87->
+*/
+
+
+Code:
+
+import java.util.*;
+class Node
+{
+    int data;
+    Node next;
+    Node(int data)
+    {
+        this.data = data;
+        this.next = null;
+    }
+}
+class LinkedList
+{
+    Node head;
+
+    LinkedList()
+    {
+        head = null;
+    }
+    void addNode(int data)
+    {
+        Node newNode = new Node(data);
+        if(head == null)
+        {
+            head = newNode;
+            return;
+        }
+
+        Node cur = head;
+        while(cur.next != null)
+        {
+            cur = cur.next;
+        }
+        cur.next = newNode;
+
+    }
+    void insertAfter(int nodeAfter, int data)
+    {
+        // Implement your code here
+        Node newNode=new Node(data);
+        Node curr=head;
+        while(curr!=null){
+            if(curr.data==nodeAfter){
+                newNode.next=curr.next;
+                curr.next=newNode;
+                return;
+            }
+            curr=curr.next;
+            
+        }
+        
+    }
+    void displayList()
+    {
+        Node cur = head;
+        while(cur != null)
+        {
+            System.out.printf("%d->",cur.data);
+            cur = cur.next;
+        }
+    }
+}
+class Solution
+{
+    public static void main(String[] args)
+    {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        LinkedList list = new LinkedList();
+        for(int i=0; i<n; i++)
+        {
+            list.addNode(sc.nextInt());
+        }
+        int nodeAfter = sc.nextInt();
+        int data = sc.nextInt();;
+        list.insertAfter(nodeAfter, data);
+        list.displayList();
+    }
+}
+
+
+4>
+/*
+Given a linked list and a key node, delete the key node from 
+the linked list.
+Note: You are provided with boilerplate code for LinkedList 
+with functions to addNode() and displayList(), you just need 
+to implement the method deleteNode().
+
+Sample test case
+
+case=1
+input=4
+4 16 23 55
+23
+output=4->16->55->
+
+Explanation:
+Input:
+Line1: Number of elements
+Line2: Value for each element in list
+Line3: Key Node to be deleted
+Output:
+List after deleting the key Node
+
+case=2
+input=4
+4 16 23 55
+4
+output=16->23->55->
+*/
+Code:
+
+
+import java.util.*;
+class Node
+{
+    int data;
+    Node next;
+    Node(int data)
+    {
+        this.data = data;
+        this.next = null;
+    }
+}
+class LinkedList
+{
+    Node head;
+
+    LinkedList()
+    {
+        head = null;
+    }
+    void addNode(int data)
+    {
+        Node newNode = new Node(data);
+        if(head == null)
+        {
+            head = newNode;
+            return;
+        }
+
+        Node cur = head;
+        while(cur.next != null)
+        {
+            cur = cur.next;
+        }
+        cur.next = newNode;
+ 
+    }
+    void deleteNode(int nodeToDelete)
+    {
+        // Implement your code here
+          // Implement your code here
+        Node curr=head;
+        if(head==null){
+            return;
+        }
+        if(head.data==nodeToDelete){
+            head=head.next;
+            return;
+        }
+        while(curr!=null){
+            if(curr.next.data==nodeToDelete){
+                curr.next=curr.next.next;
+                return;
+            }
+            curr=curr.next;
+        }
+        
+    }
+     void displayList()
+    {
+        Node cur = head;
+        while(cur != null)
+        {
+            System.out.printf("%d->",cur.data);
+            cur = cur.next;
+        }
+    }
+}
+class Solution
+{
+    public static void main(String[] args)
+    {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        LinkedList list = new LinkedList();
+        for(int i=0; i<n; i++)
+        {
+            list.addNode(sc.nextInt());
+        }
+        int nodeToDelete = sc.nextInt();
+        list.deleteNode(nodeToDelete);
+        list.displayList();
+    }
+}
+
+
+
+Day 14-LinkedList programs 
+1>
+/*
+Given the head of a linked list and an integer val, remove all
+the nodes of the linked list that has Node.val == val, and 
+return the new head.
+
+Note: The boilerplate code for creating the LinkedList from 
+user input and display of the LinkedList is taken care of, 
+you just need to implement the method removeElements().
+
+Sample testcase
+
+case=1
+input=7
+1 2 6 3 4 5 6
+6
+output=[1, 2, 3, 4, 5]
+
+case=2
+input=0
+1
+output=[]
+
+class Node
+{
+    int data;
+    Node next;
+
+    Node(int data)
+    {
+        this.data = data;
+        this.next = null;
+    }
+}
+*/
+
+import java.util.*;
+class Solution
+{
+    // Implement your code here
+    Node removeElements(Node node, int k)
+    {
+        // Implement your code here
+          if(node==null){
+            return null;
+        }
+        node.next=removeElements(node.next,k);
+        if(node.data==k){
+            return node.next;
+        }
+        return node;
+        
+    }
+}
+
+2>
+/*
+Given the head of a singly linked list, reverse the list, and return the reversed list.
+Note: The boilerplate code for creating the LinkedList from user input and 
+display of the LinkedList is taken care of, you just need to implement the method reverseList().
+
+Sample testcase
+
+case=1
+input=5
+1 2 3 4 5
+output=[5, 4, 3, 2, 1]
+
+case=2
+input=2
+1 2
+output=[2, 1]
+
+import java.util.*;
+class Node
+{
+    int data;
+    Node next;
+
+    Node(int data)
+    {
+        this.data = data;
+        this.next = null;
+    }
+}
+*/
+
+import java.util.*;
+class Solution
+{
+    Node reverseList(Node node)
+    {
+        // Implement your code here
+         Node prev=null;
+            Node curr=node;
+            Node next=null;
+
+            while(curr!=null){
+                next=curr.next;
+                curr.next=prev;
+
+                prev=curr;
+                curr=next;
+            }
+            return prev;
+    }
+}
+
+3>
+/*
+Given the head of a sorted linked list, delete all duplicates such that each 
+element appears only once. Return the linked list sorted as well.
+Note: The boilerplate code for creating the LinkedList from user input and 
+display of the LinkedList is taken care of, you just need to implement the 
+method removeDuplicates().
+
+Sample testcase
+
+case=1
+input=3
+1 1 2
+output=[1, 2]
+
+case=2
+input=3
+1 1 2 3 3
+output=[1, 2, 3]
+
+import java.util.*;
+class Node
+{
+    int data;
+    Node next;
+
+    Node(int data)
+    {
+        this.data = data;
+        this.next = null;
+    }
+}
+*/
+
+import java.util.*;
+class Solution
+{
+    Node removeDuplicates(Node node){
+            Node curr=node;
+            while(curr!=null && curr.next!=null){
+                if(curr.data==curr.next.data){
+                    curr.next=curr.next.next;
+                }
+                else{
+                curr=curr.next;
+                }
+            }
+            return node;
+    }
+}
+
+4>
+/*
+Given the head of a linked list, rotate the list to the right by k places.
+
+Note: The boilerplate code for creating the LinkedList from user input and 
+display of the LinkedList is taken care of, you just need to implement the 
+method rotateRight().
+
+Sample test cases
+
+case=1
+input=5
+1 2 3 4 5
+2
+output=[4, 5, 1, 2, 3]
+
+ 
+
+case=2
+input=3
+0 1 2
+4
+output=[2, 0, 1]
+
+import java.util.*;
+class Node
+{
+    int data;
+    Node next;
+
+    Node(int data)
+    {
+        this.data = data;
+        this.next = null;
+    }
+}
+*/
+
+import java.util.*;
+class Solution
+{
+     Node rotateRight(Node head, int k)
+    {
+        // Implemente your code here
+        Node prev= null;
+        Node cur = head;
+        while(k>0)
+        {
+            while(cur.next!=null)
+            {
+                prev= cur;
+                cur = cur.next;
+            }
+            cur.next = head;
+            head = cur;
+            prev.next= null;
+            k--;
+        }
+        return cur;
+
+}
+}
+
+
+
+***************DAY 15 LinkedList*******************
+
+1>
+/*
+Given the head of a linked list, remove the nth node from the end of the list 
+and return its head.
+Note: The boilerplate code for creating the LinkedList from user input and 
+display of the LinkedList is taken care of, you just need to implement the 
+method removeNthNodeFromEnd().
+
+Sample testcase
+ 
+
+case=1
+input=5
+1 2 3 4 5
+2
+output=[1, 2, 3, 5]
+
+case=2
+input=1
+1
+1
+output=[]
+
+import java.util.*;
+class Node
+{
+    int data;
+    Node next;
+
+    Node(int data)
+    {
+        this.data = data;
+        this.next = null;
+    }
+}
+*/
+
+import java.util.*;
+class Solution
+{
+    Node removeNthNodeFromEnd(Node node, int k)
+    {
+        // Implement your code here
+        if(node==null){
+            return null;
+        }
+        
+        Node curr=node;
+        int len=0;
+        while(curr!=null){
+            curr=curr.next;
+            len++;
+        }
+        curr=node;
+        int count=0;
+        while(curr!=null){
+        
+            if(count==len-k-1){
+                curr.next=curr.next.next;
+            }
+            else{
+            curr=curr.next;
+                
+            }
+            count++;
+        }
+        return node;
+    }
+
+}
+
+2>Repeadeltly removing the nodes for the sum is 0
+/*
+Given the head of a linked list, we repeatedly delete consecutive sequences of 
+nodes that sum to 0 until there are no such sequences.
+After doing so, return the head of the final linked list. 
+
+Note: The boilerplate code for creating the LinkedList from user input and 
+display of the LinkedList is taken care of, you just need to implement the 
+method removeZeroSumSublists().
+
+Sample testcase
+case=1
+input=5
+1 2 -3 -3 1
+output=[1, 2, 1]
+
+case=2
+input=5
+1 2 -3 -3 2
+output=[1]
+
+import java.util.*;
+class Node
+{
+    int data;
+    Node next;
+
+    Node(int data)
+    {
+        this.data = data;
+        this.next = null;
+    }
+}
+*/
+
+import java.util.*;
+class Solution
+{
+    
+    Node removeZeroSumSublists(Node node)
+    {
+        // // Implement your code here
+        // Node curr=node;
+        // Node temp=node;
+        // int sum=0;
+        // while(curr!=null && curr.next!=null){
+        //     sum+=curr.data;
+        //     if(curr+sum==0){
+        //         curr.next=curr.next.next;
+        //         sum=0;
+        //     }
+            
+            
+            
+        // }
+        // 1,2,-3,-3,2
+
+        if(node.next==null){
+            return node;
+        }
+        node.next=removeZeroSumSublists(node.next);
+        
+        if((node.next!=null) && (node.data-node.next.data)==0){
+            return node.next.next;
+        }
+        return node;
+    }
+}
+
+3>Check weather the linkedlist is palindrome or not.
+/*
+Given the head of a singly linked list, return true if it is a palindrome or 
+false otherwise.
+
+Note: The boilerplate code for creating the LinkedList from user input and 
+display of the LinkedList is taken care of, you just need to implement the 
+method isPalindrome().
+
+import java.util.*;
+class Node
+{
+    int data;
+    Node next;
+
+    Node(int data)
+    {
+        this.data = data;
+        this.next = null;
+    }
+}
+*/
+
+import java.util.*;
+class Solution
+{
+    Node findMiddle(Node head){
+        Node slow=head;
+        Node fast=head;
+        while(fast!=null && fast.next!=null){
+            slow=slow.next;
+            fast=fast.next.next;
+            
+        }
+        return slow;
+    }
+    boolean isPalindrome(Node head)
+    {
+        // Implement your code here
+        if(head==null && head.next==null){
+            return true;
+        }
+        
+       Node mid=findMiddle(head);  //middle
+        
+        
+        //reversing the 2nd half
+        Node curr=mid;
+        Node prev=null;
+        Node next=null;
+        while(curr!=null){
+            next=curr.next;
+            curr.next=prev;
+            
+            prev=curr;
+            curr=next;
+
+        }
+        
+        Node right=prev;
+        Node left=head;
+        
+        while(right!=null){
+            if(left.data==right.data){
+                return true;
+            }
+            left=left.next;
+            right=right.next;
+        }
+        return false;
+    }
+}
