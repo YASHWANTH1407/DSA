@@ -1,0 +1,356 @@
+*********DAY-17 (Queues)***************
+1>
+Given an array of integers, create a queue data structure and display the 
+contents of the queue. To achieve this you need to create a Queue class having 
+two functionality, 1. enqueue(), to add a node to the Queue and 
+2. displayQueue(), to display the contents of the Queue.
+
+Sample test case
+
+case=1
+input=4
+4 16 23 55
+output=[4, 16, 23, 55]
+
+case=2
+input=5
+3 6 2 8 7
+output=[3, 6, 2, 8, 7]
+
+Solution:
+import java.util.*;
+
+class Node
+{
+    int data;
+    Node next;
+    
+    Node(int data)
+    {
+        this.data = data;
+        this.next= null;
+    }
+}
+
+class Queue
+{
+    Node front,rear;
+
+    boolean isEmpty()
+    {
+        return(front==null && rear==null);
+    }
+    public void  enqueue(int x)
+    {
+        Node newNode = new Node(x);
+        if(isEmpty())
+        {
+            front = rear = newNode;
+            return;
+        }
+        else
+        { rear.next = newNode;
+          rear = newNode;
+        }
+    }
+List<Integer> displayQueue()
+    {
+        List<Integer> list = new ArrayList<>();
+        Node curNode = front;
+        while(curNode != null)
+        {
+            list.add(curNode.data);
+            curNode = curNode.next;
+        }
+        return list;
+    }
+}
+class test
+{
+    public static void main(String[] args)
+    {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        Queue queue = new Queue();
+        for(int i=0; i<n; i++)
+        {
+            queue.enqueue(sc.nextInt());
+        }
+        System.out.println(queue.displayQueue());
+    }
+}
+2>
+/*
+Given a queue, implement dequeue() method, this method will deletes a node from 
+the queue and returns the deleted node.
+Note: A Queue data structure with methods are provided, you just need to 
+implement the dequeue() function.
+
+Sample test case
+
+case=1
+input=4
+4 16 23 55
+1
+output=[16, 23, 55]
+
+Explanation:
+Input:
+Line1: Number of elements
+Line2: Value for each element in queue
+Line3: Number of elements to dequeue.
+Output:
+Queue after deleting the elements.
+
+case=2
+input=5
+3 6 2 8 7
+2
+output=[2, 8, 7]
+*/
+Solution:
+
+import java.util.*;
+class Node
+{
+    int data;
+    Node next;
+    Node(int data)
+    {
+        this.data = data;
+        this.next = null;
+    }
+}
+class Queue
+{
+    Node front, rear;
+    Queue()
+    {
+        front = rear = null;
+    }
+    boolean isEmpty()
+    {
+        return (front == null && rear == null);
+    }
+
+    void enqueue(int data)
+    {
+        Node newNode = new Node(data);
+        if(isEmpty())
+        {
+            front = rear = newNode;
+            return;
+        }
+        rear.next = newNode;
+        rear = newNode;
+    }
+    Node dequeue()
+    {
+        // Implement your code here
+        if(front==null){
+            return null;
+        }
+        Node remove=front;
+        front=front.next;
+        if(front==null){
+            rear=null;
+        }
+        return remove;
+        
+    }
+    List<Integer> displayQueue()
+    {
+        List<Integer> list = new ArrayList<>();
+        Node curNode = front;
+        while(curNode != null)
+        {
+            list.add(curNode.data);
+            curNode = curNode.next;
+        }
+        return list;
+    }
+}
+class Solution
+{
+    public static void main(String[] args)
+    {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        Queue queue = new Queue();
+        for(int i=0; i<n; i++)
+        {
+            queue.enqueue(sc.nextInt());
+        }
+        int k = sc.nextInt();
+        for(int i=0; i<k; i++)
+        {
+            queue.dequeue();
+        }
+        System.out.println(queue.displayQueue());
+    }
+}
+
+4>
+/*
+You are given an m x n matrix mat and two integers r and c representing the 
+number of rows and the number of columns of the wanted reshaped matrix. 
+The reshaped matrix should be filled with all the elements of the original 
+matrix in the same row-traversing order as they were.
+
+Note: A Queue data structure with the following methods are provided
+1.	enqueue(): This method adds a node to the queue.
+2.	dequeue(): This method deletes a node from the queue and returns the 
+deleted node.
+3.	displayQueue(): This method displays the contents of the queue.
+
+You just need to implement the reshapeMatrix() function.
+
+case=1
+input=2 3
+1 3 5
+2 4 6
+3 2
+output=[[1, 3], [5, 2], [4, 6]]
+
+Explanation:
+Input: line1 is value for m and n, followed by their values in subsequent lines, 
+finally the values for i and j.
+Output: [[1, 3], [5, 2], [4, 6]], since, new values for row=3 and column=2.
+
+case=2
+input=2 3
+1 3 5
+2 4 6
+3 3
+output=[]
+
+Explanation: The number of elements of original matrix does not match the number 
+of elements of reshaped matrix, therefore result is empty set.
+
+case=3
+input=4 4
+1 3 5 7
+2 4 6 8
+9 11 13 15
+10 12 14 16
+2 8
+output=[[1, 3, 5, 7, 2, 4, 6, 8], [9, 11, 13, 15, 10, 12, 14, 16]]
+*/
+
+Solution:
+import java.util.*;
+class Node
+{
+    int data;
+    Node next;
+    Node(int data)
+    {
+        this.data = data;
+        this.next = null;
+    }
+}
+class Queue
+{
+    Node front, rear;
+    Queue()
+    {
+        front = rear = null;
+    }
+    boolean isEmpty()
+    {
+        return (front == null && rear == null);
+    }
+
+    void enqueue(int data)
+    {
+        Node newNode = new Node(data);
+        if(isEmpty())
+        {
+            front = rear = newNode;
+            return;
+        }
+        rear.next = newNode;
+        rear = newNode;
+    }
+    Node dequeue()
+    {
+        if(isEmpty())
+        {
+            return null;
+        }
+        Node deletedNode = front;
+        front = front.next;
+        if(front == null)
+        {
+            rear = null;
+        }
+        return deletedNode;
+    }
+    List<Integer> displayQueue()
+    {
+        List<Integer> list = new ArrayList<>();
+        Node curNode = front;
+        while(curNode != null)
+        {
+            list.add(curNode.data);
+            curNode = curNode.next;
+        }
+        return list;
+    }
+}
+class Solution
+{
+    int[][] reshapeMatrix(int[][] mat, int newRows, int newCols)
+    {
+        // implement your code here
+        int rows = mat.length;
+        int cols = mat[0].length;
+        
+        // Check if the number of elements in the original matrix matches the number of elements in the reshaped matrix
+        if (rows * cols != newRows * newCols) {
+            return new int[0][0];
+        }
+        
+        Queue queue = new Queue();
+        
+        // Flatten the original matrix into a queue
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                queue.enqueue(mat[r][c]);
+            }
+        }
+        
+        // Reshape the queue into a new matrix
+        int[][] reshapedMat = new int[newRows][newCols];
+        for (int r = 0; r < newRows; r++) {
+            for (int c = 0; c < newCols; c++) {
+                Node node = queue.dequeue();
+                reshapedMat[r][c] = node.data;
+            }
+        }
+        
+        return reshapedMat;
+    }
+    }
+    public static void main(String[] args)
+    {
+        Scanner sc = new Scanner(System.in);
+        int rows = sc.nextInt();
+        int cols = sc.nextInt();
+        int[][] mat = new int[rows][cols];
+        Queue queue = new Queue();
+        for(int r=0; r<rows; r++)
+        {
+            for(int c=0; c<cols; c++)
+            {
+                mat[r][c] = sc.nextInt();
+            }
+        }
+        int newRows = sc.nextInt();
+        int newCols = sc.nextInt();
+
+        int[][] res = new Solution().reshapeMatrix(mat, newRows, newCols);
+        System.out.println(Arrays.deepToString(res));
+    }
+}
+
