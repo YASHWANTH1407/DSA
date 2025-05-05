@@ -1,0 +1,264 @@
+*************************STACKS,queues,Trees,Graphs************************
+Given a string s of '(' , ')' and lowercase English characters.
+
+Your task is to remove the minimum number of parentheses ( '(' or ')', in any 
+positions ) so that the resulting parentheses string is valid and return any 
+valid string.
+
+Formally, a parentheses string is valid if and only if:
+
+It is the empty string, contains only lowercase characters, or
+It can be written as AB (A concatenated with B), where A and B are valid 
+strings, or
+It can be written as (A), where A is a valid string.
+
+Sample test case
+case=1
+input=lee(t(c)o)de)
+output=lee(t(c)o)de
+Explanation: "lee(t(co)de)" , "lee(t(c)ode)" would also be accepted.
+
+case=2
+input=a)b(c)d
+output=ab(c)d
+
+case=3
+input=))((
+output=
+Explanation: An empty string is also valid.
+
+Solution:
+  
+
+  import java.util.*;
+public class test{
+    public static String removeParenthesis(String str){
+        int n=str.length();
+        Deque<Character> st=new ArrayDeque<>();
+        int leftcount=0;
+        for(char ch:str.toCharArray()){
+            
+            if(ch=='(' ){
+                st.push(ch);
+                leftcount++;
+                
+            }
+             if(ch==')'){
+             if( leftcount>0){
+                 st.push(ch);
+                 leftcount--;
+                //  continue;
+            }
+            continue;
+        }
+        st.push(ch);
+        }
+        StringBuilder  str1=new StringBuilder();
+        while(!st.isEmpty()){
+            str1.append(st.pop());
+        }
+        return str1.reverse().toString();
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        String str=sc.nextLine();
+        System.out.println(removeParenthesis(str));
+    }
+}
+
+
+  The school cafeteria offers circular and square sandwiches at lunch break, 
+referred to by numbers 0 and 1 respectively. All students stand in a queue. 
+Each student either prefers square or circular sandwiches.
+
+The number of sandwiches in the cafeteria is equal to the number of students. 
+The sandwiches are placed in a stack. At each step:
+
+If the student at the front of the queue prefers the sandwich on the top of 
+the stack, they will take it and leave the queue.
+Otherwise, they will leave it and go to the queue's end.
+This continues until none of the queue students want to take the top sandwich 
+and are thus unable to eat.
+
+You are given two integer arrays students and sandwiches where sandwiches[i] 
+is the type of the ith sandwich in the stack (i = 0 is the top of the stack) 
+and students[j] is the preference of the jth student in the initial 
+queue (j = 0 is the front of the queue). Return the number of students that 
+are unable to eat.
+
+Sample test case
+case=1
+input=4
+1 1 0 0
+0 1 0 1
+output=0
+
+Explanation:
+- Front student leaves the top sandwich and returns to the end of the line 
+making students = [1,0,0,1].
+- Front student leaves the top sandwich and returns to the end of the line m
+aking students = [0,0,1,1].
+- Front student takes the top sandwich and leaves the line making 
+students = [0,1,1] and sandwiches = [1,0,1].
+- Front student leaves the top sandwich and returns to the end of the 
+line making students = [1,1,0].
+- Front student takes the top sandwich and leaves the line making 
+students = [1,0] and sandwiches = [0,1].
+- Front student leaves the top sandwich and returns to the end of the 
+line making students = [0,1].
+- Front student takes the top sandwich and leaves the line making 
+students = [1] and sandwiches = [1].
+- Front student takes the top sandwich and leaves the line making 
+students = [] and sandwiches = [].
+Hence all students are able to eat.
+
+case=2
+input=6
+1 1 1 0 0 1
+1 0 0 0 1 1
+output=3
+
+Solution:
+import java.util.*;
+
+public class test {
+    public static int countStudents(int sandwiches[], int studentPrefs[], int n) {
+        Queue<Integer> q = new LinkedList<>();
+        for (int pref : studentPrefs) {
+            q.offer(pref);
+        }
+
+        int index = 0;
+        int failCount = 0;
+
+        while (!q.isEmpty()) {
+            if (q.peek() == sandwiches[index]) {
+                q.poll();
+                index++;
+                failCount = 0; // reset after success
+            } else {
+                q.offer(q.poll());
+                failCount++;
+            }
+
+            // If all students failed to take the sandwich, exit
+            if (failCount == q.size()) {
+                break;
+            }
+        }
+
+        return q.size(); // remaining students
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] sandwiches = new int[n];
+        int[] students = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            students[i] = sc.nextInt();
+        }
+
+        for (int i = 0; i < n; i++) {
+            sandwiches[i] = sc.nextInt();
+        }
+
+        System.out.println(countStudents(sandwiches, students, n));
+    }
+}
+
+
+/*
+Given the root node of a binary search tree and two integers low and high, 
+return the sum of values of all nodes with a value in the inclusive 
+range [low, high].
+
+case=1
+input=7
+10 5 15 3 7 -1 18
+7 15
+output=32
+Explanation: Nodes 7, 10, and 15 are in the range [7, 15]. 7 + 10 + 15 = 32.
+
+case=2
+input=10
+10 5 15 3 7 13 18 1 -1 6
+6 10
+output=23
+Explanation: Nodes 6, 7, and 10 are in the range [6, 10]. 6 + 7 + 10 = 23.
+
+class Node
+{
+    int data;
+    Node left, right;
+    Node(int data)
+    {
+        this.data = data;
+        left = right = null;
+    }
+}
+*/
+
+import java.util.*;
+class Solution
+{
+    int rangeSumBST(Node root, int low, int high)
+    {
+        // Implement your code here
+        int sum=0;
+        if(root==null){
+            return 0;
+        }   
+        if(root.data>=low && root.data<=high){
+            sum+=root.data;
+        }
+        if(root.data>low){
+        sum+=rangeSumBST(root.left,low,high);
+        }
+        if(root.data<high){
+        sum+=rangeSumBST(root.right,low,high);
+        }
+        return sum;
+    }
+}
+
+
+
+You are given an m x n matrix board containing letters 'X' and 'O', capture 
+regions that are surrounded:
+
+Connect: A cell is connected to adjacent cells horizontally or vertically.
+Region: To form a region connect every 'O' cell.
+Surround: The region is surrounded with 'X' cells if you can connect the 
+region with 'X' cells and none of the region cells are on the edge of the board.
+To capture a surrounded region, replace all 'O's with 'X's in-place within 
+the original board. You do not need to return anything.
+
+case=1
+input=4 4
+X X X X
+X O O X
+X X O X
+X O X X
+output=[[X, X, X, X], [X, X, X, X], [X, X, X, X], [X, O, X, X]]
+
+case=2
+input=1 1
+X
+output=[[X]]
+
+case=3
+input=6 6
+X X X X X X
+X X O X X X
+X X X X X X
+O O X X X X
+X X X O O X
+X X X X O X
+output=[[X, X, X, X, X, X], [X, X, X, X, X, X], [X, X, X, X, X, X], [O, O, X, X, X, X], [X, X, X, O, O, X], [X, X, X, X, O, X]]
+
+
+
+
+  
