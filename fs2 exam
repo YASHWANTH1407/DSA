@@ -1,0 +1,476 @@
+Given a string expression representing arbitrarily nested ternary expressions, 
+evaluate the expression, and return the result of it.
+
+You can always assume that the given expression is valid and only contains 
+digits, '?', ':', 'T', and 'F' where 'T' is true and 'F' is false. All the 
+numbers in the expression are one-digit numbers (i.e., in the range [0, 9]).
+
+The conditional expressions group right-to-left (as usual in most languages), 
+and the result of the expression will always evaluate to either a digit, 
+'T' or 'F'.
+
+case=1
+input=T?2:3
+output=2
+Explanation: If true, then result is 2; otherwise result is 3.
+
+case=2
+input=F?1:T?4:5
+output=4
+Explanation: The conditional expressions group right-to-left. Using 
+parenthesis, it is read/evaluated as:
+"(F ? 1 : (T ? 4 : 5))" --> "(F ? 1 : 4)" --> "4"
+or "(F ? 1 : (T ? 4 : 5))" --> "(T ? 4 : 5)" --> "4"
+
+case=3
+input=T?T?F:5:3
+output=F
+Explanation: The conditional expressions group right-to-left. Using 
+parenthesis, it is read/evaluated as:
+"(T ? (T ? F : 5) : 3)" --> "(T ? F : 3)" --> "F"
+"(T ? (T ? F : 5) : 3)" --> "(T ? F : 5)" --> "F"
+
+
+import java.util.*;
+public class test{
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        String str=sc.nextLine();
+        Deque<Character> st=new ArrayDeque<>();
+        for(int i=str.length()-1;i>=0;i--){
+            char ch=str.charAt(i);
+            
+            
+            // if(st.peek()=='Y'){
+            //     st.pop();
+            //     st.pop();
+            //     // st.pop();
+            // }
+            // if(st.peek()=='N'){
+            //     st.pop();
+            //     st.pop();
+            //     st.pop();
+            //     st.pop();
+            // }
+            
+            if(!st.isEmpty() && st.peek()=='?'){
+                st.pop();
+                
+                char trueExpression=st.pop();
+                st.pop();
+                char falseExpression=st.pop();
+                
+                
+                char result=(ch=='T')?trueExpression:falseExpression;
+                st.push(result);
+            }
+            else{
+                st.push(ch);
+            }
+            
+        }
+        System.out.println(st.peek());
+    }
+}
+
+
+
+
+There are n friends that are playing a game. The friends are sitting in a 
+circle and are numbered from 1 to n in clockwise order. More formally, moving 
+clockwise from the ith friend brings you to the (i+1)th friend for 1 <= i < n, 
+and moving clockwise from the nth friend brings you to the 1st friend.
+
+The rules of the game are as follows:
+
+Start at the 1st friend.
+Count the next k friends in the clockwise direction including the friend you 
+started at. The counting wraps around the circle and may count some friends 
+more than once.
+The last friend you counted leaves the circle and loses the game.
+If there is still more than one friend in the circle, go back to step 2 
+starting from the friend immediately clockwise of the friend who just lost 
+nd repeat.
+Else, the last friend in the circle wins the game.
+Given the number of friends, n, and an integer k, return the winner of the game.
+
+
+case=1
+input=5 2
+output=3
+Explanation: Here are the steps of the game:
+1) Start at friend 1.
+2) Count 2 friends clockwise, which are friends 1 and 2.
+3) Friend 2 leaves the circle. Next start is friend 3.
+4) Count 2 friends clockwise, which are friends 3 and 4.
+5) Friend 4 leaves the circle. Next start is friend 5.
+6) Count 2 friends clockwise, which are friends 5 and 1.
+7) Friend 1 leaves the circle. Next start is friend 3.
+8) Count 2 friends clockwise, which are friends 3 and 5.
+9) Friend 5 leaves the circle. Only friend 3 is left, so they are the winner.
+
+case=2
+input=6 5
+output=1
+Explanation: The friends leave in this order: 5, 4, 6, 2, 3. The winner is friend 1.
+
+import java.util.*;
+public class test{
+    public static int lastperson(int n,int k){
+        Queue<Integer> q=new LinkedList<>();
+        for(int i=1;i<=n;i++){
+            q.offer(i);
+        }
+        int count=1;
+        while(!q.isEmpty()){
+            
+            
+            q.offer(q.poll());
+            count++;
+            
+            
+            if(count==k){
+                
+                q.poll();
+                count=1;
+                
+            }
+            if(q.size()==1){
+                break;
+            }
+            
+            
+            
+           
+        }
+        
+        return q.peek();
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int k=sc.nextInt();
+        System.out.println(lastperson(n,k));
+    }
+}
+
+
+
+/*
+Given a binary tree, find the lowest common ancestor (LCA) of two given nodes 
+in the tree.
+
+According to the definition of LCA on Wikipedia: “The lowest common ancestor 
+is defined between two nodes p and q as the lowest node in T that has 
+both p and q as descendants (where we allow a node to be a descendant of itself).”
+
+case=1
+input=11
+3 5 1 6 2 0 8 -1 -1 7 4
+5 1
+output=3
+
+Input Tree:         3
+                   / \
+                  5   1
+                 / \ / \
+                6  2 0  8
+                  / \
+                 7   4
+
+p = 5, q = 1 → LCA = 3
+Explanation: The LCA of nodes 5 and 1 is 3.
+
+case=2
+input=11
+3 5 1 6 2 0 8 -1 -1 7 4
+5 4
+output=5
+
+Input Tree:         3
+                   / \
+                  5   1
+                 / \ / \
+                6  2 0  8
+                  / \
+                 7   4
+
+p = 5, q = 4 → LCA = 5 (since 4 is in 5's subtree)
+Explanation: The LCA of nodes 5 and 4 is 5, since a node can be a descendant 
+of itself according to the LCA definition.
+
+case=3
+input=2
+1 2
+1 2
+output=1
+Input Tree:     1
+               /
+              2
+
+p = 1, q = 2 → LCA = 1
+
+import java.util.*;
+class Node
+{
+    int data;
+    Node left, right;
+    Node(int data)
+    {
+        this.data = data;
+        left = right = null;
+    }
+}
+*/
+
+import java.util.*;
+class Solution
+{
+    int lowestCommonAncestor(Node root, int p, int q)
+    {
+        // Implement your code here
+        if(root==null){
+            return 0;
+        }
+        if(root.data==p || root.data==q){
+            return root.data;
+        }
+        
+        int lh=lowestCommonAncestor(root.left,p,q);
+        int rh=lowestCommonAncestor(root.right,p,q);
+        
+        
+        if(lh==0){
+            return rh;
+        }
+        
+        if(rh==0){
+            return lh;
+        }
+        return root.data;
+        
+    }
+    
+}
+
+
+/*
+Given the root of a binary tree and two integers p and q, return the distance 
+between the nodes of value p and value q in the tree.
+The distance between two nodes is the number of edges on the path from one 
+to the other.
+
+case=1
+input=11
+3 5 1 6 2 0 8 -1 -1 7 4
+5 0
+output=3
+
+Input Tree:         3
+                   / \
+                  5   1
+                 / \ / \
+                6  2 0  8
+                  / \
+                 7   4
+
+Explanation: There are 3 edges between 5 and 0: 5-3-1-0.
+
+case=2
+input=11
+3 5 1 6 2 0 8 -1 -1 7 4
+5 7
+output=2
+Input Tree:         3
+                   / \
+                  5   1
+                 / \ / \
+                6  2 0  8
+                  / \
+                 7   4
+Explanation: There are 2 edges between 5 and 7: 5-2-7.
+
+case=3
+input=11
+3 5 1 6 2 0 8 -1 -1 7 4
+5 5
+output=0
+Input Tree:         3
+                   / \
+                  5   1
+                 / \ / \
+                6  2 0  8
+                  / \
+                 7   4
+Explanation: The distance between a node and itself is 0.
+
+import java.util.*;
+class Node
+{
+    int data;
+    Node left, right;
+    Node(int data)
+    {
+        this.data = data;
+        left = right = null;
+    }
+}
+*/
+
+import java.util.*;
+class Solution
+{
+    int getDistance(Node root, int p, int q)
+    {
+        // Implement your code here
+        
+        
+        
+    }
+     int lowestCommonAncestor(Node root, int p, int q){
+         
+         if(root==null || root.data==p || root.data=q){
+                return root.data;
+            }
+             
+         int lh=lowestCommonAncestor(root.left,p,q);
+         int rh=lowestCommonAncestor(root.right,p,q);
+         
+                     
+            
+            if(lh==0){
+                return rh;
+            }
+            
+            
+            if(rh==0){
+            return lh;
+            }
+            return root.data;
+        }
+
+
+
+
+Jadav Payeng, "The Forest Man of India", 
+started planting the seeds in a M*N grid land.
+Each cell in the grid land is planted with a seed.
+After few days, some seeds grow into saplings indicates with '1',
+and the rest are dead seeds indicates with '0'.
+
+One or more saplings are connected either horizontally, vertically or diagonally 
+with each other, form a sapling-group. 
+There may be zero more sapling-groups in the grid land.
+
+Jadav Payeng wants to know the biggest sapling-group in that grid land.
+
+You are given the M * N grid, filled with 0's and 1's.
+You are task is to help Jadav Payeng to find the number of saplings in 
+the largest sapling-group.
+
+Input Format:
+-------------
+Line-1: Two integers M and N, the number of rows and columns in the grid-land.
+Next M lines: contains N space-separated integers .
+
+Output Format:
+--------------
+Print an integer, the number of saplings in the 
+largest sapling-group in the given grid-land.
+
+Sample Input-1:
+---------------
+5 4
+0 0 1 1
+0 0 1 0
+0 1 1 0
+0 1 0 0
+1 1 0 0
+
+Sample Output-1:
+----------------
+8
+
+
+Sample Input-2:
+---------------
+5 5
+0 1 1 1 1
+0 0 0 0 1
+1 1 0 0 0
+1 1 0 1 1
+0 0 0 1 0
+
+Sample Output-2:
+----------------
+5
+
+case=1
+input=5 4
+0 0 1 1
+0 0 1 0
+0 1 1 0
+0 1 0 0
+1 1 0 0
+output=8
+
+case=2
+input=5 5
+0 1 1 1 1
+0 0 0 0 1
+1 1 0 0 0
+1 1 0 1 1
+0 0 0 1 0
+output=5
+
+import java.util.*;
+public class test{
+    static int[] dx={-1,-1,-1,0,0,1,1,1};
+    static int[] dy={-1,0,1,-1,1,-1,0,1};
+    public static int sapling(int arr[][],boolean visited[][],int x,int y){
+        // int directions[][]={{0,1},{0,-1},{1,0},{-1,0},{1,-1},{-1,1}};
+        visited[x][y]=true;
+        int count=1;
+        for(int dir=0;dir<8;dir++){
+            int newX=x+dx[dir];
+            int newY=y+dy[dir];
+            if(newX>=0 && newY>=0 && newX<arr.length && newY<arr[0].length && arr[newX][newY]==1 && !visited[newX][newY]){
+                count+=sapling(arr,visited,newX,newY);
+            }
+        }
+        
+        return count;
+        
+        
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int rows=sc.nextInt();
+        int cols=sc.nextInt();
+        int arr[][]=new int[rows][cols];
+        boolean visited[][]=new boolean[rows][cols];
+        int maxgroup=0;
+        for(int i=0;i<rows;i++){
+            for(int j=0;j<cols;j++){
+                arr[i][j]=sc.nextInt();
+            }
+        }
+        
+        for(int i=0;i<rows;i++){
+            for(int j=0;j<cols;j++){
+                if(arr[i][j]==1 && !visited[i][j]){
+                    int size=sapling(arr,visited,i,j);
+                    maxgroup=Math.max(maxgroup,size);
+                }
+            }
+        }
+        System.out.println(maxgroup);
+    }
+}
+
+
+
+
+
+
+
