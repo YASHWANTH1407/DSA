@@ -711,97 +711,38 @@ output=[ad, ae, af, bd, be, bf, cd, ce, cf]
 
 import java.util.*;
 
-public class test 
-
-{
-
-
-
-    public static List<String> letterCombinations(String str) 
-
-{
-
-
+public class test {
+    public static List<String> letterCombinations(String str) {
         List<String> result = new ArrayList<>();
-        if (str.length() == 0) 
-
-{
-
-
-            return result;
-        
-
-}
-
+        if (str.length() == 0) return result;
         HashMap<Character, String> hm = new HashMap<>();
-        hm.put('2', "abc");
-        hm.put('3', "def");
-        hm.put('4', "ghi");
-        hm.put('5', "jkl");
-        hm.put('6', "mno");
-        hm.put('7', "pqrs");
-        hm.put('8', "tuv");
-        hm.put('9', "wxyz");
-
+        hm.put('2', "abc"); hm.put('3', "def"); hm.put('4', "ghi");
+        hm.put('5', "jkl"); hm.put('6', "mno"); hm.put('7', "pqrs");
+        hm.put('8', "tuv"); hm.put('9', "wxyz");
         backtrack(str, 0, new StringBuilder(), hm, result);
-
         return result;
-    
+    }
 
-}
-
-    public static void backtrack(String str, int index, StringBuilder path,
-                                 HashMap<Character, String> hm, List<String> result) 
-
-{
-
-
-
-        if (index == str.length()) 
-
-{
-
-
+    public static void backtrack(String str, int index, StringBuilder path, HashMap<Character, String> hm, List<String> result) {
+        if (index == str.length()) {
             result.add(path.toString());
             return;
-        
-
-}
-
-        char digit = str.charAt(index);
-        String letters = hm.get(digit);  // ✅ FIXED this line
-
-        if (letters == null) return;     // Optionally skip invalid input like '1' or '0'
-
-        for (char letter : letters.toCharArray()) 
-
-{
-
-
+        }
+        String letters = hm.get(str.charAt(index));
+        if (letters == null) return;
+        for (char letter : letters.toCharArray()) {
             path.append(letter);
             backtrack(str, index + 1, path, hm, result);
-            path.deleteCharAt(path.length() - 1); // Backtrack
-        
+            path.deleteCharAt(path.length() - 1);
+        }
+    }
 
-}
-    
-
-}
-
-    public static void main(String[] args) 
-
-{
-
-
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String str = sc.nextLine();
-
         List<String> combinations = letterCombinations(str);
-        System.out.println(combinations); // ✅ Print the result
-    
-
-}
-
+        System.out.println(combinations);
+    }
 }
 
 
