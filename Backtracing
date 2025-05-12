@@ -839,3 +839,252 @@ public class test{
     }
 }
 
+
+
+Given an array of distinct integers candidates and a target integer target, 
+return a list of all unique combinations of candidates where the chosen numbers 
+sum to target. You may return the combinations in any order.
+
+The same number may be chosen from candidates an unlimited number of times. 
+Two combinations are unique if the frequency of at least one of the chosen 
+numbers is different.
+
+The test cases are generated such that the number of unique combinations that 
+sum up to target is less than 150 combinations for the given input.
+
+case=1
+input=4
+2 3 8 7
+7
+output=[[2, 2, 3], [7]]
+Explanation:
+2 and 3 are candidates, and 2 + 2 + 3 = 7. Note that 2 can be used multiple times.
+7 is a candidate, and 7 = 7.
+These are the only two combinations.
+
+case=2
+input=3
+2 3 5
+8
+output=[[2, 2, 2, 2], [2, 3, 3], [3, 5]]
+
+case=3
+input=1
+2
+1
+output=[]
+
+
+
+import java.util.*;
+public class test{
+    public static List<List<Integer>> combinations(int arr[],int target){
+        List<List<Integer>> result=new ArrayList<>();
+        List<Integer> temp=new ArrayList<>();
+        
+        
+        backtrack(arr,0,temp,result,target);
+        return result;
+    }
+    public  static void backtrack(int arr[],int index,List<Integer> temp,List<List<Integer>> result,int target){
+        
+        if(target==0){
+            result.add(new ArrayList<>(temp));
+            return;
+        }
+        if(target<0){
+            return;
+        }
+        for(int i=index;i<arr.length;i++){
+            temp.add(arr[i]);
+            backtrack(arr,i,temp,result,target-arr[i]);
+            temp.remove(temp.size()-1);
+            
+        }
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int arr[]=new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+            
+        }
+        int target=sc.nextInt();
+        System.out.println(combinations(arr,target));
+    }
+}
+
+
+
+
+The n-queens puzzle is the problem of placing n queens on an n x n chessboard 
+such that no two queens attack each other.
+Given an integer n, return all distinct solutions to the n-queens puzzle. 
+You may return the answer in any order.
+Each solution contains a distinct board configuration of the n-queens' 
+placement, where 'Q' and '.' both indicate a queen and an empty space, 
+respectively.
+
+case=1
+input=4
+output=[[.Q.., ...Q, Q..., ..Q.], [..Q., Q..., ...Q, .Q..]]
+Explanation: There exist two distinct solutions to the 4-queens puzzle as 
+shown above
+
+case=2
+input=1
+output=[[Q]]
+
+
+import java.util.*;
+public class test{
+    public static void solveNQueens(int n) {
+        List<List<String>> results = new ArrayList<>();
+        char[][] board = new char[n][n];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(board[i], '.');
+        }
+        solve(0, board, results, n);
+        System.out.print(results);
+    }
+    static void solve(int row, char[][] board, List<List<String>> results, int n) {
+        if (row == n) {
+            results.add(constructBoard(board));
+            return;
+            }
+
+        for (int col = 0; col < n; col++){
+            if (isSafe(row, col, board, n)){
+                board[row][col] = 'Q';
+                solve(row + 1, board, results, n);
+                board[row][col] = '.';
+            }
+        }
+    }
+    private static boolean isSafe(int row, int col, char[][] board, int n) {
+        for (int i = 0; i < row; i++) {
+            if (board[i][col] == 'Q') return false;
+            }
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 'Q') return false;
+                }
+        for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++){
+            if (board[i][j] == 'Q') return false;
+            }
+
+        return true;
+        }
+
+    private static List<String> constructBoard(char[][] board){
+        List<String> al = new ArrayList<>();
+        for (char[] row : board){
+
+            al.add(new String(row));
+            }
+        return al;
+        }
+ public static void main(String[] args) {
+       Scanner sc = new Scanner(System.in);
+       int n = sc.nextInt();
+       solveNQueens(n);
+    
+}
+
+}
+
+
+
+
+
+
+
+Given n pairs of parentheses, write a function to generate all combinations 
+of well-formed parentheses.
+
+case=1
+input=3
+output=[((())), (()()), (())(), ()(()), ()()()]
+
+case=2
+input=1
+output=[()]
+
+
+import java.util.*;
+public class test
+
+{
+
+
+    public static List<String> generateParenthesis(int n)
+
+{
+
+
+        List<String> result=new ArrayList<>();
+        if(n==0)
+
+{
+
+
+            return result;
+        
+
+}
+        backtrack(n,0,0,new StringBuilder(""),result);
+        return result;
+    
+
+}
+    
+    private static void backtrack(int n,int open,int close,StringBuilder path,List<String> result)
+
+{
+
+
+        
+        if(path.length()==2*n)
+
+{
+
+
+            result.add(path.toString());
+            return;
+        
+
+}
+        
+        if(open<n)
+
+{
+          
+          
+            path.append('(');
+            backtrack(n,open+1,close,path,result);
+            path.deleteCharAt(path.length()-1);
+        
+
+}
+        if(close<open)
+
+{           
+    
+
+            path.append(")");
+            backtrack(n,open,close+1,path,result);
+            path.deleteCharAt(path.length()-1);
+}
+}
+    public static void main(String[] args)
+{
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        System.out.println(generateParenthesis(n));
+
+}
+
+}
+
+
+
