@@ -1087,4 +1087,267 @@ public class test
 }
 
 
+Given an m x n grid of characters board and a string word, return true if 
+word exists in the grid.
+
+The word can be constructed from letters of sequentially adjacent cells, 
+where adjacent cells are horizontally or vertically neighboring. The same 
+letter cell may not be used more than once.
+
+Sample test case
+
+case=1
+input=3 4
+A B C E
+S F C S
+A D E E
+ABCCED
+output=true
+
+case=2
+input=3 4
+A B C E
+S F C S
+A D E E
+SEE
+output=true
+
+
+import java.util.*;
+
+public class test 
+
+{
+
+
+    public static boolean willExists(char[][] board, String target) 
+
+{
+
+
+        int rows = board.length;
+        int cols = board[0].length;
+        boolean[][] visited = new boolean[rows][cols];
+
+        for (int i = 0; i < rows; i++) 
+
+{
+
+
+            for (int j = 0; j < cols; j++) 
+
+{
+
+
+                if (board[i][j] == target.charAt(0)) 
+
+{
+
+
+                    if (backtrack(board, target, i, j, 0, visited)) 
+
+{
+
+
+                        return true;
+                    
+
+}
+                
+
+}
+            
+
+}
+        
+
+}
+        return false; // moved outside the loop
+    
+
+}
+
+    public static boolean backtrack(char[][] board, String target, int row, int col, int index, boolean[][] visited) 
+
+{
+
+
+        if (index == target.length()) return true;
+
+        if (row < 0 || row >= board.length || col < 0 || col >= board[0].length
+                || board[row][col] != target.charAt(index) || visited[row][col]) 
+
+{
+
+
+            return false;
+        
+
+}
+
+        visited[row][col] = true;
+
+        boolean found = backtrack(board, target, row + 1, col, index + 1, visited) ||
+                        backtrack(board, target, row - 1, col, index + 1, visited) ||
+                        backtrack(board, target, row, col + 1, index + 1, visited) ||
+                        backtrack(board, target, row, col - 1, index + 1, visited);
+
+        visited[row][col] = false; // backtrack
+        return found;
+    
+
+}
+
+    public static void main(String[] args) 
+
+{
+
+
+        Scanner sc = new Scanner(System.in);
+        int rows = sc.nextInt();
+        int cols = sc.nextInt();
+        char[][] board = new char[rows][cols];
+
+        for (int i = 0; i < rows; i++) 
+
+{
+
+
+            for (int j = 0; j < cols; j++) 
+
+{
+
+
+                board[i][j] = sc.next().charAt(0);
+            
+
+}
+        
+
+}
+
+        sc.nextLine(); // consume newline
+        String target = sc.nextLine();
+        System.out.println(willExists(board, target));
+    
+
+}
+
+}
+
+Given a positive integer n, return the punishment number of n.
+
+The punishment number of n is defined as the sum of the squares of all 
+integers i such that:
+
+1 <= i <= n
+The decimal representation of i * i can be partitioned into contiguous 
+substrings such that the sum of the integer values of these substrings equals i.
+
+case=1
+input=10
+output=182
+Explanation: There are exactly 3 integers i in the range [1, 10] that 
+satisfy the conditions in the statement:
+- 1 since 1 * 1 = 1
+- 9 since 9 * 9 = 81 and 81 can be partitioned into 8 and 1 with a sum 
+equal to 8 + 1 == 9.
+- 10 since 10 * 10 = 100 and 100 can be partitioned into 10 and 0 with a 
+sum equal to 10 + 0 == 10.
+Hence, the punishment number of 10 is 1 + 81 + 100 = 182
+
+case=2
+input=37
+output=1478
+Explanation: There are exactly 4 integers i in the range [1, 37] that satisfy 
+the conditions in the statement:
+- 1 since 1 * 1 = 1. 
+- 9 since 9 * 9 = 81 and 81 can be partitioned into 8 + 1. 
+- 10 since 10 * 10 = 100 and 100 can be partitioned into 10 + 0. 
+- 36 since 36 * 36 = 1296 and 1296 can be partitioned into 1 + 29 + 6.
+Hence, the punishment number of 37 is 1 + 81 + 100 + 1296 = 1478
+
+
+
+import java.util.*;
+public class test{
+    public static int punishmentNumber(int n){
+        int result=0;
+        for(int i=1;i<=n;i++){
+            int square=i*i;
+            if (cansplit(String.valueOf(square),0,i)){
+                result+=square;
+                
+            }
+        }
+      return result;
+        
+    }
+    public static boolean cansplit(String squarestring,int index,int target){
+        if(index==squarestring.length()){
+            return target==0;
+        }
+        
+        
+        for(int i=index+1;i<=squarestring.length();i++){
+            int x=Integer.parseInt(squarestring.substring(index,i));
+            if(x>target){
+                continue;
+            }
+            if(cansplit(squarestring,i,target-x)){
+                return true;
+            }
+            
+            
+        }
+        return false;
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        
+        System.out.println(punishmentNumber(n));
+    }
+}
+
+
+
+
+You are given a 0-indexed string pattern of length n consisting of the 
+characters 'I' meaning increasing and 'D' meaning decreasing.
+
+A 0-indexed string num of length n + 1 is created using the following conditions:
+
+num consists of the digits '1' to '9', where each digit is used at most once.
+If pattern[i] == 'I', then num[i] < num[i + 1].
+If pattern[i] == 'D', then num[i] > num[i + 1].
+Return the lexicographically smallest possible string num that meets the 
+conditions.
+
+case=1
+input=IIIDIDDD
+output=123549876
+Explanation:
+At indices 0, 1, 2, and 4 we must have that num[i] < num[i+1].
+At indices 3, 5, 6, and 7 we must have that num[i] > num[i+1].
+Some possible values of num are "245639871", "135749862", and "123849765".
+It can be proven that "123549876" is the smallest possible num that meets 
+the conditions.
+Note that "123414321" is not possible because the digit '1' is used more than once.
+
+case=2
+input=DDD
+output=4321
+Explanation:
+Some possible values of num are "9876", "7321", and "8742".
+It can be proven that "4321" is the smallest possible num that meets the 
+conditions.
+
+
+
+
+
+
+
+
 
