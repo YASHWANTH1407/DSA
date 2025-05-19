@@ -528,3 +528,76 @@ then rob house 8(money = 45)
 Total amount you can rob = 55 + 110 + 45 = 210.
 
 
+
+
+
+
+
+
+
+
+
+
+
+Given a string s and a dictionary of strings wordDict, return true if s can be 
+segmented into a space-separated sequence of one or more dictionary words.
+
+Note that the same word in the dictionary may be reused multiple times in the 
+segmentation.
+
+case=1
+input=helloworld
+hello world
+output=true
+Explanation: Return true because "helloworld" can be segmented as "hello world".
+
+case=2
+input=applepenapple
+apple pen
+output=true
+Explanation: Return true because "applepenapple" can be segmented 
+as "apple pen apple".
+Note that you are allowed to reuse a dictionary word.
+
+case=3
+input=catsandog
+cats dog sand and cat
+output=false
+
+
+
+import java.util.*;
+public class test{
+    public static boolean segmentation(String str,List<String> li,Map<String,Boolean> map,Set<String> set){
+        if(str.isEmpty()){
+            return true;
+        }
+        if(map.containsKey(str)){
+            return map.get(str);
+            
+            
+        }
+        for(int i=1;i<=str.length();i++){
+            String prefix=str.substring(0,i);
+            String suffix=str.substring(i);
+            if(set.contains(prefix) && segmentation(suffix,li,map,set)){
+                map.put(str,true);
+                return true;
+            }
+        }
+        map.put(str,false);
+        return false;
+        
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        String str=sc.nextLine();
+        String str1=sc.nextLine();
+        List<String> li=Arrays.asList(str1.split(" "));
+        Map<String,Boolean> map=new HashMap<>();
+        Set<String> set=new HashSet<>(li);
+        System.out.println(segmentation(str,li,map,set));
+    }
+}
+
+
