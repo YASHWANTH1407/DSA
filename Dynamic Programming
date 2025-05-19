@@ -662,3 +662,118 @@ public class test{
         System.out.println(uniquePaths(0,0,arr));
     }
 }
+
+Given a m x n grid filled with non-negative numbers, find a path from 
+top left to bottom right, which minimizes the sum of all numbers along its path.
+
+Note: You can only move either down or right at any point in time.
+
+case=1
+input=3 3
+1 3 1
+1 5 1
+4 2 1
+output=7
+Explanation: Because the path 1 → 3 → 1 → 1 → 1 minimizes the sum
+
+case=2
+input=3 2
+1 2 3
+4 5 6
+output=12
+import java.util.*;
+public class test{
+    public static int uniquePathSum(int row,int col,int arr[][],Integer dp[][]){
+        if(row>=arr.length || col>=arr[0].length){
+            return Integer.MAX_VALUE;
+        }
+        if(row==arr.length-1 && col==arr[0].length-1){
+            return arr[row][col];
+        }
+        if(dp[row][col]!=null){
+            return dp[row][col];
+        }
+        // int right=uniquePathSum(row,col+1,arr,dp,sum+arr[row][col]);
+        // int down=uniquePathSum(row+1,col,arr,dp,sum+arr[row][col]);
+        
+        int right=uniquePathSum(row,col+1,arr,dp);
+        int down=uniquePathSum(row+1,col,arr,dp);
+        dp[row][col]=arr[row][col]+Math.min(right,down);
+        
+        return dp[row][col];
+        
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int m=sc.nextInt();
+        int n=sc.nextInt();
+        int arr[][]=new int[m][n];
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                arr[i][j]=sc.nextInt();
+            }
+        }
+        Integer dp[][]=new Integer[m][n];
+        System.out.println(uniquePathSum(0,0,arr,dp));
+    }
+}
+
+
+Given an integer array nums, return the length of the longest strictly 
+increasing subsequence.
+
+case=1
+input=8
+10 9 2 5 3 7 101 18
+output=4
+Explanation: The longest increasing subsequence is [2,3,7,101], therefore 
+the length is 4.
+
+case=2
+input=6
+0 1 0 3 2 3
+output=4
+
+case=3
+input=7
+7 7 7 7 7 7 7
+output=1
+
+
+import java.util.*;
+public class test{
+    public static int increasingSubsequence(int arr[],int start,int dp[]){
+    if(dp[start]!=Integer.MIN_VALUE){
+        return dp[start];
+    }
+    int max=1;
+    for(int i=start+1;i<arr.length;i++){
+        if(arr[start]<arr[i]){
+            max=Math.max(max,1+increasingSubsequence(arr,i,dp));
+        }
+    }
+      
+      dp[start]=max;
+      
+      return max;
+       
+        
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int arr[]=new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+        }
+        int dp[]=new int[n];
+        Arrays.fill(dp,Integer.MIN_VALUE);
+         int maxLIS = 0;
+        for (int i = 0; i < n; i++) {
+            maxLIS = Math.max(maxLIS, increasingSubsequence(arr, i, dp));
+        }
+        System.out.println(maxLIS);
+    }
+}
+
+
