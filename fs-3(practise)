@@ -1,0 +1,486 @@
+/*
+Given the root of a binary tree, imagine yourself standing on the right side 
+of it, return the values of the nodes you can see ordered from top to bottom.
+
+case=1
+input=7
+1 2 3 -1 5 -1 4
+output=[1, 3, 4]
+
+ 
+case=2
+input=8
+1 2 3 4 -1 -1 -1 5
+output=[1, 3, 4, 5]
+
+class Node
+{
+    int data;
+    Node left, right;
+    Node(int data)
+    {
+        this.data = data;
+        left = right = null;
+    }
+}
+*/
+
+import java.util.*;
+class Solution
+{
+    List<Integer> rightSideView(Node root)
+    {
+        // Implement your code here
+        List<Integer> result=new ArrayList<>();
+        RightView(root,0,result);
+        return result;
+    }
+    public void RightView(Node root,int level,List<Integer> result){
+        if(root==null){
+            return;
+        }
+        if(result.size()==level){
+            result.add(root.data);
+        }
+        RightView(root.right,level+1,result);
+        RightView(root.left,level+1,result);
+    }
+}
+
+Suppose you are at a party with n people labeled from 0 to n - 1 and among 
+them, there may exist one celebrity. The definition of a celebrity is that 
+all the other n - 1 people know the celebrity, but the celebrity does not 
+know any of them.
+
+Now you want to find out who the celebrity is or verify that there is not 
+one. You are only allowed to ask questions like: "Hi, A. Do you know B?" 
+to get information about whether A knows B. You need to find out the 
+celebrity (or verify there is not one) by asking as few questions as 
+possible (in the asymptotic sense).
+
+You are given an integer n and a helper function bool knows(a, b) that 
+tells you whether a knows b. Implement a function int findCelebrity(n). 
+There will be exactly one celebrity if they are at the party.
+
+Return the celebrity's label if there is a celebrity at the party. If 
+there is no celebrity, return -1.
+
+Note that the n x n 2D array graph given as input is not directly available 
+to you, and instead only accessible through the helper function knows. 
+graph[i][j] == 1 represents person i knows person j, wherease 
+graph[i][j] == 0 represents person j does not know person i.
+
+case=1
+input=3
+1 1 0
+0 1 0
+1 1 1
+output=1
+
+Explanation: There are three persons labeled with 0, 1 and 2. graph[i][j] = 1 
+means person i knows person j, otherwise graph[i][j] = 0 means person i does 
+not know person j. The celebrity is the person labeled as 1 because 
+both 0 and 2 know him but 1 does not know anybody.
+
+case=2
+input=3
+1 0 1
+1 1 0
+0 1 1
+output=-1
+Explanation: There is no celebrity.
+
+
+import java.util.*;
+class test
+
+{
+
+
+    public static void main(String args[])
+
+{
+
+
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int arr[][] = new int[n][n];
+        for(int i=0 ; i<n ; i++)
+
+{
+
+
+            for(int j=0 ; j<n ; j++)
+
+{
+
+
+                arr[i][j] = sc.nextInt();
+                
+            
+
+}
+        
+
+}
+        System.out.print(celeb(n,arr));
+    
+
+}
+    public static int celeb(int rows,int arr[][])
+
+{
+
+
+      int  ans = -1;
+       for(int i=0 ; i<rows;i++)
+
+{
+
+
+           int heknows = 0;
+           for(int j=0 ; j<rows;j++)
+
+{
+
+
+               if(i!=j && knows(i,j,arr))
+
+{
+
+
+                   heknows++;
+               
+
+}
+           
+
+}
+           if(heknows == 0)
+
+{
+
+
+               ans = i;
+               break;
+           
+
+}
+       
+
+}
+        return ans;
+    
+
+}
+    public static boolean knows(int i, int j , int arr[][])
+
+{
+
+
+        if(arr[i][j] == 1) return true;
+        return false;
+
+}
+
+}
+
+
+
+Koko loves to eat bananas. There are n piles of bananas, the ith pile has 
+piles[i] bananas. The guards have gone and will come back in h hours.
+Koko can decide her bananas-per-hour eating speed of k. Each hour, she 
+chooses some pile of bananas and eats k bananas from that pile. If the pile 
+has less than k bananas, she eats all of them instead and will not eat any 
+more bananas during this hour.
+Koko likes to eat slowly but still wants to finish eating all the bananas 
+before the guards return.
+Return the minimum integer k such that she can eat all the bananas within 
+h hours.
+case=1
+input=4
+3 6 7 11
+8
+output=4
+
+case=2
+input=5
+30 11 23 4 20
+5
+output=30
+
+
+
+import java.util.*;
+class test
+
+{
+
+
+    public static void main(String args[])
+
+{
+
+
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int arr[] = new int[n];
+        for(int i=0; i<n ; i++)
+
+{
+
+
+            arr[i] = sc.nextInt();
+        
+
+}
+        int h = sc.nextInt();
+        System.out.print(minSpeed(arr,h));
+    
+
+}
+    public static int koko(int arr[],int hourly)
+
+{
+
+
+        int total_h = 0;
+        for(int n : arr)
+
+{
+
+
+            total_h += Math.ceil((double)n/hourly);
+        
+
+}
+        return total_h;
+    
+
+}
+    
+    public static int findMax(int arr[])
+
+{
+
+
+        int max = Integer.MIN_VALUE;
+        for(int n : arr)
+
+{
+
+
+            if(n > max) max = n;
+        
+
+}
+    return max;
+    
+
+}
+    
+    public static int minSpeed(int arr[] , int h)
+
+{
+
+
+        int low = 0;
+        int high = findMax(arr);
+        int ans = high;
+        while(low<=high)
+
+{
+
+
+            int mid = low + (high-low)/2;
+            int total_h = koko(arr,mid);
+            if(total_h <= h)
+
+{
+
+
+                ans = mid;
+                high = mid-1;
+            
+
+}
+            else
+
+{
+
+
+                low = mid+1;
+            
+
+}
+        
+
+}
+        return ans;
+    
+
+}
+
+}
+
+Given a string s, you can transform every letter individually to be 
+lowercase or uppercase to create another string.
+Return a list of all possible strings we could create. 
+Return the output in any order. 
+
+case=1
+input=a1b2
+output=[a1b2, a1B2, A1b2, A1B2]
+
+case=2
+input=3z4
+output=[3z4, 3Z4]
+
+
+import java.util.*;
+public class test{
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        String s=sc.next();
+        List<String> result=new ArrayList<>();
+        transform(s,"",0,result);
+        System.out.println(result);
+    }
+    public static void transform(String s,String temp,int index,List<String> result){
+        
+        if(index==s.length()){
+            result.add(temp);
+            return;
+        }
+        char ch=s.charAt(index);
+        if(Character.isDigit(ch)){
+            transform(s,temp+ch,index+1,result);
+        }
+        else{
+            transform(s,temp+Character.toLowerCase(ch),index+1,result);
+            transform(s,temp+Character.toUpperCase(ch),index+1,result);
+        }
+    }
+}
+
+
+/*
+Given an undirected graph and a number m, determine if the graph can be 
+colored with at most m colors such that no two adjacent vertices of the 
+graph are colored with same color. Here coloring of a graph means assignment 
+of colors to all vertices.
+
+An adjacency list representation of the graph having N nodes and M edges 
+is provided as input, You only have to implement the graphColoring() method. 
+Print true if the graph can be colored with m colors, else return false.
+
+Sample test case
+
+   0----1
+    |      |    \
+    |      |      \
+    |      |       4
+    |      |      /
+    |      |    /
+    2----3
+
+case=1
+input=5 6
+0 1
+0 2
+1 3
+1 4
+2 3
+3 4
+3
+output=true
+
+Explanation: 
+Input: First input line is the number of nodes, followed by number edges, 
+followed by values for the edges, followed by m colors for coloring.
+Output: true, 
+One way is Node ->Color: 0->1, 1->2, 3->1, 4->1 and 2->2
+All nodes can be colored using m colors where no two adjacent nodes have the 
+same color.
+
+case=2
+input=5 6
+0 1
+0 2
+1 3
+1 4
+2 3
+3 4
+2
+output=false
+
+class Graph
+{
+    int V;
+    LinkedList<Integer>[] adjList;
+}
+*/
+
+import java.util.*;
+class Solution
+{
+    boolean canColorGraph(Graph graph, int m)
+    {
+        // Implement your code here
+    
+    }
+}
+
+
+
+
+Given a string s, partition s such that every substring of the partition 
+is a palindrome. Return all possible palindrome partitioning of s.
+
+case=1
+input=aab
+output=[[a, a, b], [aa, b]]
+Explanation: In the above output every substring of the partition 
+is a palindrome.
+
+case=2
+input=abba
+output=[[a, b, b, a], [a, bb, a], [abba]]
+
+
+--------------------------------------------------temporraray answer---------------
+import java.util.*;
+public class test{
+    public static boolean isPalindrome(String str){
+        StringBuilder sb=new StringBuilder(str);
+        
+        return str.equals(sb.reverse().toString());
+    }
+    public static void backtrack(String str,String sub,List<String> temp,List<List<String>> result){
+        if(temp.size()==str.length()){
+            result.add(temp);
+            return;
+        }
+        backtrack(str,sub,temp.add(sub),result);
+        
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        String str=sc.next();
+        List<List<String>> result=new ArrayList<>();
+        List<String> temp=new ArrayList<>();
+        for(int i=0;i<str.length();i++){
+            for(int j=i;j<str.length();j++){
+                String sub_string=str.substring(i,j);
+                if(isPalindrome(sub_string)){
+                    backtrack(sub_string,temp,result);
+                }
+            }
+            
+        }
+        System.out.println(result);
+    }
+}
+
+
+
