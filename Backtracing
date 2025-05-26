@@ -1523,47 +1523,51 @@ output=[[a, b, b, a], [a, bb, a], [abba]]
 
 
 
-//           temportary anser
 import java.util.*;
-public class test{
-    public static boolean isPalindrome(String str){
-        StringBuilder sb=new StringBuilder(str);
-        
-        return str.equals(sb.reverse().toString());
+
+public class test {
+
+    // Function to check if a string is palindrome
+    public static boolean isPalindrome(String str) {
+        int left = 0, right = str.length() - 1;
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right)) return false;
+            left++;
+            right--;
+        }
+        return true;
     }
-    public static void backtrack(String str,String sub,List<String> temp,List<List<String>> result){
-        if(temp.size()==str.length()){
-            result.add(temp);
+
+    // Backtracking function to generate all palindrome partitions
+    public static void backtrack(String s, int start, List<String> currentPartition, List<List<String>> result) {
+        if (start == s.length()) {
+            // We've reached the end of the string, add the current partition to results
+            result.add(new ArrayList<>(currentPartition));
             return;
         }
-        backtrack(str,sub,temp.add(sub),result);
-        
-    }
-    public static void main(String[] args){
-        Scanner sc=new Scanner(System.in);
-        String str=sc.next();
-        List<List<String>> result=new ArrayList<>();
-        List<String> temp=new ArrayList<>();
-        for(int i=0;i<str.length();i++){
-            for(int j=i;j<str.length();j++){
-                String sub_string=str.substring(i,j);
-                if(isPalindrome(sub_string)){
-                    backtrack(sub_string,temp,result);
-                }
+
+        // Try all substrings starting at 'start'
+        for (int end = start; end < s.length(); end++) {
+            String substring = s.substring(start, end + 1);
+
+            if (isPalindrome(substring)) {
+                // Choose
+                currentPartition.add(substring);
+                // Explore
+                backtrack(s, end + 1, currentPartition, result);
+                // Backtrack
+                currentPartition.remove(currentPartition.size() - 1);
             }
-            
         }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s = sc.next();
+
+        List<List<String>> result = new ArrayList<>();
+        backtrack(s, 0, new ArrayList<>(), result);
+
         System.out.println(result);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
