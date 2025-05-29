@@ -1,0 +1,282 @@
+An image is represented by an m x n integer grid image where image[i][j] 
+represents the pixel value of the image.
+You are also given three integers sr, sc, and color. You should perform a 
+flood fill on the image starting from the pixel image[sr][sc].
+To perform a flood fill, consider the starting pixel, plus any pixels 
+connected 4-directionally to the starting pixel of the same color as the 
+starting pixel, plus any pixels connected 4-directionally to those pixels 
+(also with the same color), and so on. Replace the color of all of the 
+aforementioned pixels with color.
+Return the modified image after performing the flood fill.
+
+Sample test case
+
+case=1
+input=3 3
+1 1 1
+1 1 0
+1 0 1
+1 1
+2
+output=[[2, 2, 2], [2, 2, 0], [2, 0, 1]]
+
+Explanation: 
+Input: First line is number of rows and columns, followed by grid values, 
+followed by cell ‘x’ (row, column) to get the initial value, followed by 
+the new value ‘y’. Get the old value from cell ‘x’ and replace with the 
+new value ‘y’.
+From the center of the image with position (sr, sc) = (1, 1), all pixels 
+connected by a path of the same color as the starting pixel are colored with 
+the new color.
+Note the bottom corner is not colored 2, because it is not 4-directionally 
+connected to the starting pixel.
+
+case=2
+input=2 3
+0 0 0
+0 0 0
+0 0
+0
+output=[[0, 0, 0], [0, 0, 0]]
+
+Explanation: The starting pixel is already colored 0, so no changes are made 
+to the image.
+
+
+import java.util.*;
+public class test{
+   
+    public static void backtrack(int m,int n,int arr[][],int sr,int scol,int color,int oldcolor){
+        
+        if(sr<0 || sr>=arr.length || scol<0 || scol>=arr[0].length){
+            return;
+        }
+        if(arr[sr][scol]==color || arr[sr][scol]!=oldcolor){
+            return;
+        }
+       
+            arr[sr][scol]=color;
+                                      
+            backtrack(m,n,arr,sr+1,scol,color,oldcolor);
+            backtrack(m,n,arr,sr-1,scol,color,oldcolor);
+            backtrack(m,n,arr,sr,scol+1,color,oldcolor);
+            backtrack(m,n,arr,sr,scol-1,color,oldcolor);
+
+        }
+    
+    
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int m=sc.nextInt();
+        int n=sc.nextInt();
+        int arr[][]=new int[m][n];
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                arr[i][j]=sc.nextInt();
+            }
+        }
+        int sr=sc.nextInt();
+        int scol=sc.nextInt();
+        int color=sc.nextInt();
+        int oldcolor=arr[sr][scol];
+        backtrack(m,n,arr,sr,scol,color,oldcolor);
+        System.out.println(Arrays.deepToString(arr));
+        // for(int i=0;i<m;i++){
+        //     for(int j=0;j<n;j++){
+        //         System.out.print(arr[i][j]+" ");
+        //     }
+        //     System.out.println();
+        // }
+    }
+}
+
+Given an integer array nums which is sorted in ascending order and all of 
+its elements are unique and given also an integer k, return the kth missing 
+number starting from the leftmost number of the array.
+
+Sample test case
+
+case=1
+input=4
+4 7 9 10
+1
+output=5
+Explanation: The first missing number is 5.
+
+case=2
+input=4
+4 7 9 10
+3
+output=8
+Explanation: The missing numbers are [5,6,8,...], hence the third missing 
+number is 8.
+
+case=3
+input=3
+1 2 4
+3
+output=6
+Explanation: The missing numbers are [3,5,6,7,...], hence the third missing 
+number is 6.
+
+
+
+
+import java.util.*;
+public class Test{
+    public static int missingnumbers(int index,int[] arr){
+        return arr[index]-arr[0]-index;
+    }
+    public static int findmissingnum(int[] arr,int k){
+        int n=arr.length;
+        int ans=-1;
+        if(missingnumbers(n-1,arr)<k){
+            int z= arr[n-1]+(k-missingnumbers(n-1,arr));
+            return z;
+        }
+        else{
+            int low=0;
+            int high=n-1;
+            while(low<=high){
+                int mid=low+(high-low)/2;
+                if(missingnumbers(mid,arr)<k){
+                    ans= arr[mid]+1;
+                    low=mid+1;
+                }
+                else high=mid-1;
+                
+            }
+            return arr[low-1]+(k-missingnumbers(low-1,arr));
+        }
+    }
+    public static void main(String args[]){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int[] arr=new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+        }
+        int k=sc.nextInt();
+        int x=findmissingnum(arr,k);
+        System.out.println(x);
+        
+        
+    }
+}
+
+
+
+import java.util.*;
+public class test{
+    public static int missing(int arr[],int k){
+        Arrays.sort(arr);
+        // if(k>arr.length){
+        //     return -1;
+        // }
+        List<Integer> result=new ArrayList<>();
+        for(int i=0;i<arr.length-1;i++){
+            int j=i+1;
+            if(arr[j]-arr[i]>0){
+                for(int m=arr[i]+1;m<arr[j];m++){
+                    result.add(m);
+                }
+            }
+        }
+        return result.get(k-1);
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int arr[]=new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+        }
+        int k=sc.nextInt();
+        System.out.println(missing(arr,k));
+    }
+}
+
+
+
+
+/*
+Given the root of a binary tree, return the zigzag level order traversal 
+of its nodes' values. (i.e., from left to right, then right to left for 
+the next level and alternate between).
+
+Sample test case
+ 
+case=1
+input=7
+3 9 20 -1 -1 15 7
+output=[[3], [20, 9], [15, 7]]
+
+case=2
+input=1
+1
+output=[[1]]
+
+case=3
+input=0
+output=[]
+
+class Node
+{
+    int data;
+    Node left, right;
+    Node(int data)
+    {
+        this.data = data;
+        left = right = null;
+    }
+}
+*/
+
+import java.util.*;
+class Solution
+{
+    List<List<Integer>> zigzagLevelOrder (Node root)
+    {
+        // Implement your code here
+        List<List<Integer>> result=new ArrayList<>();
+       
+       if(root==null){
+           return result;
+       }
+       
+       Queue<Node> q=new LinkedList<>();
+       q.offer(root);
+       boolean leftToright=true;
+       while(!q.isEmpty()){
+            int size=q.size();
+            LinkedList<Integer> current=new LinkedList<>();
+            for(int i=0;i<size;i++){
+                Node node=q.poll();
+                if(leftToright){
+                    current.addLast(node.data);
+                }
+                else{
+                    current.addFirst(node.data);
+                }
+                
+                if(node.left!=null){
+                    q.offer(node.left);
+                }
+                if(node.right!=null){
+                    q.offer(node.right);
+                }
+            }
+            result.add(current);
+            leftToright=!leftToright;
+            
+       }
+       return result;
+    }
+    
+}
+
+
+
+
+
+//
