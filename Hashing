@@ -1,0 +1,186 @@
+Given an array of integers nums and an integer target, return indices of the 
+two numbers such that they add up to target.
+You should not use the same element twice. If there are not two numbers that 
+add up to target, then return empty list.
+
+Sample testcase
+
+case=1
+input=4
+2 7 11 15
+9
+output=[0, 1]
+
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+
+case=3
+input=3
+11 2 15 7 5
+14
+output=[]
+
+
+
+import java.util.*;
+public class test{
+    public static int[] findIndeces(int arr[],int target){
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        for(int i=0;i<arr.length;i++){
+            int complement=target-arr[i];
+            if(hm.containsKey(complement)){
+                return new int[]{hm.get(complement),i};
+            }
+            hm.put(arr[i],i);
+        }
+        return new int[]{};
+    
+       
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int arr[]=new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+        }
+        int target=sc.nextInt();
+        System.out.println(Arrays.toString(findIndeces(arr,target)));
+        
+       
+    }
+}
+
+
+Given an array nums containing n distinct numbers in the range [0, n], return 
+the only number in the range that is missing from the array.
+
+case=1
+input=3
+3 0 1
+output=2
+Explanation:
+n = 3 since there are 3 numbers, so all numbers are in the range [0,3]. 2 is 
+the missing number in the range since it does not appear in nums.
+
+case=2
+input=2
+0 1
+output=2
+Explanation:
+n = 2 since there are 2 numbers, so all numbers are in the range [0,2]. 2 is 
+the missing number in the range since it does not appear in nums.
+
+case=3
+input=9
+9 6 4 2 3 5 7 0 1
+output=8
+Explanation:
+n = 9 since there are 9 numbers, so all numbers are in the range [0,9]. 8 is 
+the missing number in the range since it does not appear in nums.
+
+
+import java.util.*;
+public class test{
+    public static int missingNumber(int arr[]){
+       List<Integer> l=new ArrayList<>();
+       for(int i=0;i<arr.length;i++){
+           l.add(arr[i]);
+       }
+       for(int i=0;i<=arr.length;i++){
+           if(!l.contains(i)){
+               return i;
+           }
+       }
+       return -1;
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int arr[]=new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+        }
+       System.out.println(missingNumber(arr));
+    }
+}
+
+
+Given two strings s and t, return true if t is an anagram of s, and 
+false otherwise.
+An Anagram is a word or phrase formed by rearranging the letters of a different 
+word or phrase, typically using all the original letters exactly once.
+
+Sample test case
+case=1
+input=anagram
+nagaram
+output=true
+
+case=2
+input=rat
+car
+output=false
+
+
+import java.util.*;
+public class test{
+    public static boolean Anagram(String str1,String str2){
+        TreeMap<Character,Integer> hm1=new TreeMap<>();
+        TreeMap<Character,Integer> hm2=new TreeMap<>();
+        if(str1.length()!=str2.length()){
+            return false;
+        }
+        for(Character ch:str1.toCharArray()){
+                hm1.put(ch,hm1.getOrDefault(ch,0)+1);
+            }
+            
+            for(Character ch2:str2.toCharArray()){
+                hm2.put(ch2,hm2.getOrDefault(ch2,0)+1);
+            }
+            
+            
+       return hm1.equals(hm2);
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        String str1=sc.next();
+        String str2=sc.next();
+        System.out.println(Anagram(str1,str2));
+    }
+}
+
+
+Given two strings s and t, determine if they are isomorphic.
+Two strings s and t are isomorphic if the characters in s can be replaced 
+to get t.
+All occurrences of a character must be replaced with another character while 
+preserving the order of characters. No two characters may map to the 
+same character, but a character may map to itself.
+
+Sample testcase
+
+case=1
+input=egg
+add
+output=true
+
+Explanation:
+The strings s and t can be made identical by:
+Mapping 'e' to 'a'.
+Mapping 'g' to 'd'.
+
+case=2
+input=foo
+bar
+output=false
+
+Explanation:
+The strings s and t can not be made identical as 'o' needs to be mapped to 
+both 'a' and 'r'.
+
+case=3
+input=paper
+paper
+output=true
+
+
