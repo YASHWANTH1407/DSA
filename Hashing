@@ -184,3 +184,246 @@ paper
 output=true
 
 
+import java.util.*;
+
+class test
+{
+    public static boolean isIso(String s, String c)
+    {
+        Map<Character,Character> hms= new HashMap<>();
+        Map<Character,Character> hmc= new HashMap<>();
+        
+        for(int i=0;i<s.length();i++)
+        {
+            char chs= s.charAt(i);
+            char chc= c.charAt(i);
+            
+            if(hms.containsKey(chs))
+            {
+                if(hms.get(chs)!=chc)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                hms.put(chs,chc);
+            }
+            
+            if(hmc.containsKey(chc))
+            {
+                if(hmc.get(chc)!=chs)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                hmc.put(chc,chs);
+            }
+        }
+        return true;
+    }
+    public static void main(String args[])
+    {
+        Scanner sc= new Scanner(System.in);
+        String s= sc.next();
+        String c= sc.next();
+            
+        if(s.length()!=c.length())
+        {
+            System.out.println(false);
+        }
+        else
+        {
+            System.out.println(isIso(s,c));
+        }
+    }
+
+}
+
+Given a string num which represents an integer, return true if num is a 
+strobogrammatic number.
+A strobogrammatic number is a number that looks the same when rotated 
+180 degrees (looked at upside down).
+
+Sample testcase
+
+case=1
+input=69
+output=true
+
+case=2
+input=962
+output=false
+
+case=3
+input=88
+output=true
+
+import java.util.*;
+public class test{
+    public static boolean grammetic(String str){
+        int n=str.length();
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        hm.put(0,0);
+        hm.put(1,1);
+        hm.put(6,9);
+        hm.put(8,8);
+        hm.put(9,6);
+        
+        StringBuilder sb=new StringBuilder();
+        for(int i=0;i<str.length();i++){
+            char ch=str.charAt(i);
+            int digit=ch-'0';
+            if(!hm.containsKey(digit)){
+                return false;
+            }
+            else{
+                sb.append(hm.get(digit));
+            }
+        }
+        String ans=sb.reverse().toString();
+        
+        if(!ans.equals(str)){
+            return false;
+        }
+        return true;
+    }
+    public static void main(String[] args){          
+        Scanner sc=new Scanner(System.in);
+        String str=sc.next();
+        System.out.println(grammetic(str));
+    }
+}
+
+
+Given an array of unique integers arr, replace each element with its rank.
+The rank represents how large the element is. The rank has the following rules:
+Rank is an integer starting from 1.
+
+The larger the element, the larger the rank. Rank should be as small as possible.
+ 
+Sample test case
+
+case=1
+input=4
+40 10 20 30
+output=[4, 1, 2, 3]
+
+Explanation: 40 is the largest element. 10 is the smallest. 20 is the second 
+smallest. 30 is the third smallest.
+
+case=2
+input=3
+120 110 100
+output=[3, 2, 1]
+
+
+import java.util.*;
+public class test{
+    public static int[] rank(int arr[],int copy[]){
+        
+        Arrays.sort(arr);
+
+        Map<Integer,Integer> hm=new TreeMap<>();
+        for(int i=0;i<arr.length;i++){
+            if(!hm.containsKey(arr[i])){
+            hm.put(arr[i],i+1);
+            }
+        }
+        int ans[]=new int[arr.length];
+        // int i=0; 
+        for(int i=0;i<copy.length;i++){
+            ans[i]=hm.get(copy[i]);
+        }
+        
+        return ans;
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int arr[]=new int[n];
+        int copy[]=new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+            copy[i]=arr[i];
+        }
+        System.out.println(Arrays.toString(rank(arr,copy)));
+        
+    }
+}
+
+Given an array nums of size n, return the majority element.
+The majority element is the element that appears more than [n/2] times. 
+You may assume that the majority element always exists in the array.
+
+Sample testcase
+
+case=1
+input=3
+3 2 3
+output=3
+
+case=2
+input=7
+2 2 1 1 1 2 2
+output=2
+
+import java.util.*;
+public class test{
+    public static int majority(int arr[]){
+        int n=arr.length;
+        HashMap<Integer,Integer> hm=new HashMap<>();
+        for(int i=0;i<n;i++){
+            hm.put(arr[i],hm.getOrDefault(arr[i],0)+1);
+        }
+        for(Integer x:hm.keySet()){
+            if(hm.get(x)>(n/2)){
+                return x;
+            }
+        }
+        return -1;
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int arr[]=new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+        }
+        System.out.println(majority(arr));
+    }
+}
+
+
+Write an algorithm to determine if a number n is happy.
+A happy number is a number defined by the following process:
+Starting with any positive integer, replace the number by the sum of the 
+squares of its digits.
+Repeat the process until the number equals 1 (where it will stay), or it 
+loops endlessly in a cycle which does not include 1.
+Those numbers for which this process ends in 1 are happy.
+Return true if n is a happy number, and false if not.
+
+Sample testcase
+case=1
+input=19
+output=true
+
+Explanation:
+1^2 + 9^2 = 82
+8^2 + 2^2 = 68
+6^2 + 8^2 = 100
+1^2 + 0^2 + 0^2 = 1
+
+case=2
+input=368
+output=true
+
+
+
+
+
+
+
