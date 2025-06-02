@@ -1,0 +1,203 @@
+Given an array of integers nums, sort the array in ascending order and return it.
+You must solve the problem without using any built-in functions in O(nlog(n)) 
+time complexity and with the smallest space complexity possible.
+
+Note: ***********Use Merge Sort Algorithm****************
+
+Sample test case
+case=1
+input=4
+5 2 3 1
+output=[1, 2, 3, 5]
+
+Explanation: After sorting the array, the positions of some numbers are not 
+changed (for example, 2 and 3), while the positions of other numbers are 
+changed (for example, 1 and 5).
+
+case=2
+input=6
+5 1 1 2 0 0
+output=[0, 0, 1, 1, 2, 5]
+Explanation: Note that the values of nums are not necessarily unique.
+
+
+import java.util.*;
+public class test{
+    public static void mergeSort(int arr[],int low,int high){
+        if(low<high){
+            int mid=low+(high-low)/2;
+            mergeSort(arr,low,mid);
+            mergeSort(arr,mid+1,high);
+            merge(arr,low,mid,high);
+            }
+        }
+        public static void merge(int arr[],int low,int mid,int high){
+            int arr1[]=new int[mid-low+1];
+            int arr2[]=new int[high-mid];
+          
+           
+           for(int i=0;i<arr1.length;i++){
+               arr1[i]=arr[low+i];
+           }
+           for(int j=0;j<arr2.length;j++){
+               arr2[j]=arr[mid+1+j];
+           }
+            int i=0;
+           int j=0;
+           int k=low;
+           while(i<arr1.length && j<arr2.length){
+               if(arr1[i]<=arr2[j]){
+                   arr[k++]=arr1[i++];
+               }
+               else {
+                   arr[k++]=arr2[j++];
+               }
+               
+           }
+           while(i<arr1.length){
+               arr[k++]=arr1[i++];
+           }
+           while(j<arr2.length){
+               arr[k++]=arr2[j++];
+           }
+        }
+    
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int arr[]=new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+        }
+        int low=0;
+        int high=arr.length-1;
+        mergeSort(arr,low,high);
+        System.out.println(Arrays.toString(arr));
+    }
+}
+
+Given an array of integers nums, sort the array in ascending order and return it.
+You must solve the problem without using any built-in functions in O(nlog(n)) 
+time complexity and with the smallest space complexity possible.
+
+Note: Use********** Quick Sort Algorithm*************
+
+Sample test case
+case=1
+input=4
+5 2 3 1
+output=[1, 2, 3, 5]
+
+Explanation: After sorting the array, the positions of some numbers are not 
+changed (for example, 2 and 3), while the positions of other numbers are 
+changed (for example, 1 and 5).
+
+case=2
+input=6
+5 1 1 2 0 0
+output=[0, 0, 1, 1, 2, 5]
+Explanation: Note that the values of nums are not necessarily unique.
+
+
+import java.util.*;
+public class test{
+    public static void quickSort(int arr[],int low,int high){
+        if(low<high){
+            int pivot=partiton(arr,low,high);
+            
+            quickSort(arr,low,pivot-1);
+            quickSort(arr,pivot+1,high);
+        }
+     
+    }
+    public static int partiton(int arr[],int low,int high){
+        int pivot=arr[high];
+        int i=low;
+        
+        
+        for(int j=low;j<high;j++){
+            if(arr[j]<pivot){
+                
+                
+                //swap
+                int temp=arr[i];
+                arr[i]=arr[j];
+                arr[j]=temp;
+                
+                i++;
+                
+            }
+            
+        }
+        //swap higher than pivot elements
+        int temp=arr[i];
+        arr[i]=arr[high];
+        arr[high]=temp;
+        return i;
+        
+        
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int arr[]=new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+        }
+        quickSort(arr,0,arr.length-1);
+        
+        for(int num:arr){
+            System.out.println(num+" ");
+        }
+    }
+}
+
+
+Given an integer array nums and an integer k, return the kth largest element 
+in the array.
+Note that it is the kth largest element in the sorted order, 
+not the kth distinct element.
+
+Can you solve it without sorting?
+
+case=1
+input=6
+3 2 1 5 6 4
+2
+output=5
+
+case=2
+input=9
+3 2 3 1 2 4 5 5 6
+4
+output=4
+
+
+
+import java.util.*;
+public class test{
+    public static void main(String args[]){
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int arr[]=new int[n];
+        for(int i=0;i<n;i++){
+            arr[i]=sc.nextInt();
+        }
+        int k=sc.nextInt();
+        
+        PriorityQueue <Integer> pq=new PriorityQueue <>();
+        
+        for(int num:arr){
+            pq.offer(num);
+            if(pq.size()>k){
+                pq.poll();
+            }
+        }
+        System.out.println(pq.peek());
+    }
+}
+
+
+
+
+
