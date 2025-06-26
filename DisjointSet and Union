@@ -1,0 +1,835 @@
+/* You are given a graph with N vertices numbered from 1 to N and M edges. 
+Given two specific vertices, determine whether there is a path connecting them.
+
+Sample testcase
+
+case=1
+input=5 4
+1 2
+2 3
+4 5
+3 4
+1 5
+output=true
+
+Explanation:
+Input: first line contains N vertices and M edges, followed by value 
+for m edges, followed by two specific vertices to find if there is a path 
+connecting them.
+Output: true
+
+case=2
+input=5 3
+1 2
+2 3
+4 5
+1 5
+output=false
+
+*/
+
+import java.util.*;
+
+class DS
+{
+    int parent[], rank[];
+    int n;
+    
+    DS(int n)
+    {
+        rank = new int[n+1];
+        parent = new int[n+1];
+        this.n= n;
+        for(int i=0;i<n;i++)
+        {
+            parent[i]=i;
+            rank[i]=1;
+        }
+    }
+    
+    public int find(int i)
+    {
+        if(parent[i]==i)
+        {
+            return i;
+        }
+        
+        return parent[i]= find(parent[i]);
+    }
+    
+    public void union(int x, int y)
+    {
+        int rootx= find(x);
+        int rooty= find(y);
+        
+        if(rootx!=rooty)
+        {
+            if(rank[rootx]>rank[rooty])
+            {
+                parent[rooty]= rootx;
+            }
+            else if(rank[rootx]<rank[rooty])
+            {
+                parent[rootx]= rooty;
+            }
+            else
+            {
+                parent[rooty]= rootx;
+                rank[rootx]++;
+            }
+        }
+    }
+    
+    public static void main(String args[])
+    {
+        Scanner sc= new Scanner(System.in);
+        int v= sc.nextInt();
+        int e=sc.nextInt();
+        DS ds= new DS(v);
+        
+        for(int i=0;i<e;i++)
+        {
+            int x=sc.nextInt();
+            int y=sc.nextInt();
+            ds.union(x,y);
+        }
+        int x= sc.nextInt();
+        int y=sc.nextInt();
+        
+        if(ds.find(x)==ds.find(y))
+        {
+            System.out.println("true");
+        }
+        else 
+        {
+            System.out.println("false");
+        }
+    }
+    
+}
+
+
+/* You have a graph of n nodes. You are given an integer n and an array edge 
+where edges[i] = [ai, bi] indicates that there is an edge between ai and bi 
+in the graph.
+
+Return the number of connected components in the graph using Union find.
+
+Sample testcase
+ 
+case=1
+input=5 3
+0 1
+1 2
+3 4
+output=2
+
+Explanation:
+Input: first line contains ‘n’ number of nodes and ‘m’ number of edges, 
+followed by value for m edges.
+Output: 2. First component having nodes 0, 1, 2 and second component having 
+nodes 3, 4
+
+case=2
+input=5 4
+0 1
+1 2
+2 3
+3 4
+output=1
+s*/
+
+import java.util.*;
+import java.io.*;
+
+class DS
+{
+    int parent[],rank[];
+    int n;
+    
+    DS (int n)
+    {
+        rank= new int[n+1];
+        parent= new int[n+1];
+        this.n=n;
+        for(int i=0;i<n;i++)
+        {
+            parent[i]=i;
+            rank[i]=1;
+        }
+    }
+    
+    public int find(int i)
+    {
+        if(parent[i]==i)
+        {
+            return i;
+        }
+        return parent[i]= find(parent[i]);
+    }
+    
+    public void union(int x,int y)
+    {
+        int rootx= find(x);
+        int rooty= find(y);
+        
+        if(rootx!=rooty)
+        {
+            if(rank[rootx]>rank[rooty])
+            {
+                parent[rooty]=rootx;
+            }
+            else if(rank[rootx]<rank[rooty])
+            {
+                parent[rootx]=rooty;
+            }
+            else
+            {
+                parent[rooty]=rootx;
+                rank[rootx]++;
+            }
+        }
+    }
+    
+    public static void main(String[] arg)
+    {
+        Scanner sc= new Scanner(System.in);
+        int n= sc.nextInt();
+        int m= sc.nextInt();
+        DS ds= new DS(n);
+        
+        for(int i=0;i<m;i++)
+        {
+            int x= sc.nextInt();
+            int y= sc.nextInt();
+            ds.union(x,y);
+        }
+        
+        int count=0;
+        for(int i=0;i<n;i++)
+        {
+            if(ds.find(i)==i)
+            {
+                count++;
+            }
+        }
+        
+        System.out.println(count);
+    }
+}
+
+
+
+
+/*Given an m x n 2D binary grid grid which represents a map of '1's (land) and 
+'0's (water), return the number of islands.
+An island is surrounded by water and is formed by connecting adjacent lands 
+horizontally or vertically. You may assume all four edges of the grid are 
+all surrounded by water.
+
+case=1
+input=4 5
+1 1 1 1 0
+1 1 0 1 0
+1 1 0 0 0
+0 0 0 0 0
+output=1
+
+case=2
+input=4 5
+1 1 0 0 0
+1 1 0 0 0
+0 0 1 0 0
+0 0 0 1 1
+output=3
+*/
+
+
+import java.util.*;
+
+class DS {
+    int parent[], ranks[];
+    int r, c;
+    int count;  // total number of lands (1s)
+
+    DS(int r, int c, int[][] mat) {
+        parent = new int[r * c];
+        ranks = new int[r * c];
+        this.r = r;
+        this.c = c;
+        count = 0;
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                int idx = i * c + j;
+                parent[idx] = idx;
+                ranks[idx] = 1;
+                if (mat[i][j] == 1) {
+                    count++;  // count every land cell
+                }
+            }
+        }
+    }
+
+    public int find(int i) {
+        if (parent[i] == i) return i;
+        return parent[i] = find(parent[i]);
+    }
+
+    public void union(int x, int y) {
+        int rootx = find(x);
+        int rooty = find(y);
+
+        if (rootx != rooty) {
+            // union by rank
+            if (ranks[rootx] > ranks[rooty]) {
+                parent[rooty] = rootx;
+            } else if (ranks[rootx] < ranks[rooty]) {
+                parent[rootx] = rooty;
+            } else {
+                parent[rooty] = rootx;
+                ranks[rootx]++;
+            }
+            count--;  // merged two separate lands -> one less island
+        }
+    }
+
+    public int numIsl(int[][] mat) {
+        int[][] directions = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (mat[i][j] == 1) {
+                    for (int[] d : directions) {
+                        int ni = i + d[0];
+                        int nj = j + d[1];
+                        if (ni >= 0 && ni < r && nj >= 0 && nj < c && mat[ni][nj] == 1) {
+                            union(i * c + j, ni * c + nj);
+                        }
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int r = sc.nextInt();
+        int c = sc.nextInt();
+        int[][] mat = new int[r][c];
+
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                mat[i][j] = sc.nextInt();
+            }
+        }
+
+        DS ds = new DS(r, c, mat);
+        System.out.println(ds.numIsl(mat));
+    }
+}
+
+
+/* You are given an m x n matrix board containing letters 'X' and 'O', capture 
+regions that are surrounded:
+
+Connect: A cell is connected to adjacent cells horizontally or vertically.
+Region: To form a region connect every 'O' cell.
+Surround: The region is surrounded with 'X' cells if you can connect the 
+region with 'X' cells and none of the region cells are on the edge of the board.
+To capture a surrounded region, replace all 'O's with 'X's in-place within 
+the original board. You do not need to return anything.
+
+case=1
+input=4 4
+X X X X
+X O O X
+X X O X
+X O X X
+output=[[X, X, X, X], [X, X, X, X], [X, X, X, X], [X, O, X, X]]
+
+case=2
+input=1 1
+X
+output=[[X]]
+
+*/
+
+import java.util.*;
+
+class DS
+{
+    int parent[],rank[];
+    int r,c;
+    
+    DS(int r,int c,char[][]mat)
+    {
+        parent= new int[r*c+1];
+        rank= new int[r*c+1];
+        this.r= r;
+        this.c=c;
+        for (int i=0;i<r*c;i++)
+        {
+            parent[i]= i;
+            rank[i]=1;
+        }
+    }
+    
+    public int find(int i)
+    {
+        if(parent[i]==i)
+        {
+            return i;
+        }
+        return parent[i]= find(parent[i]);
+    }
+    
+    public void union( int x,int y)
+    {
+        int rootx= find(x);
+        int rooty= find(y);
+        
+        if(rootx!=rooty)
+        {
+            if( rank[rootx]> rank[rooty])
+            {
+                parent[rooty]= rootx;
+            }
+            else if( rank[rootx]< rank[rooty])
+            {
+                parent[rootx]= rooty;
+            }
+            else 
+            {
+                parent[rooty]= rootx;
+                rank[rootx]++;
+            }
+        }
+    }
+    
+    public void capture(char[][] mat)
+    {
+        int[][] dirs ={{-1,0},{1,0},{0,-1},{0,1}};
+        int dummy= r*c;
+        
+        for(int i=0;i<r;i++)
+        {
+            for(int j=0;j<c;j++)
+            {
+                if( mat[i][j]=='O')
+                {
+                    int idx=i*c+j;
+                    if(i==0||i==r-1||j==0||j==c-1)
+                    {
+                        union(idx,dummy);
+                    }
+                    for(int[] d:dirs)
+                    {
+                        int ni= i+d[0];
+                        int nj= j+d[1];
+                        if(ni>=0&& ni<r && nj>=0 &&nj<c && mat[ni][nj]=='O')
+                        {
+                            union(idx,ni*c+nj);
+                        }
+                    }
+                }
+            }
+        }
+        
+        for(int i=0;i<r;i++)
+        {
+            for(int j=0;j<c;j++)
+            {
+                if(mat[i][j]=='O' && find(i*c+j)!=find(dummy))
+                {
+                    mat[i][j]='X';
+                }
+            }
+        }
+    }
+    
+    public static void main(String args[])
+    {
+        Scanner sc= new Scanner(System.in);
+        int r=sc.nextInt();
+        int c=sc.nextInt();
+        char mat[][]= new char[r][c];
+        
+        for(int i=0;i<r;i++)
+        {
+            for(int j=0;j<c;j++)
+            {
+                mat[i][j]= sc.next().charAt(0);
+            }
+        }
+        
+        DS ds= new DS(r,c,mat);
+        ds.capture(mat);
+        
+        System.out.println(Arrays.deepToString(mat));
+    }
+}
+
+/* There are n cities. Some of them are connected, while some are not. 
+If city a is connected directly with city b, and city b is connected 
+directly with city c, then city a is connected indirectly with city c.
+
+A province is a group of directly or indirectly connected cities and no 
+other cities outside of the group.
+
+You are given an n x n matrix isConnected where isConnected[i][j] = 1 if 
+the ith city and the jth city are directly connected, and 
+isConnected[i][j] = 0 otherwise.
+
+Return the total number of provinces.
+
+Sample test case
+
+case=1
+input=3
+1 1 0
+1 1 0
+0 0 1
+output=2
+
+Explanation:
+Input: First line is the number of vertices, followed by adjacency matrix 
+representation of graph.
+Output: 2, there are two connected provinces i.e (1,2) and (3)
+
+case=2
+input=3
+1 0 0
+0 1 0
+0 0 1
+output=3
+*/
+
+import java.util.*;
+
+class DS
+{
+    int parent[], rank[];
+    int n;
+
+    DS(int n,int mat[][])
+    {
+        parent= new int[n];
+        rank= new int[n];
+        this.n= n;
+        for(int i=0;i<n;i++)
+        {
+            parent[i]=i;
+            rank[i]=1;
+        }
+    }
+    
+    public int find(int i)
+    {
+        if(parent[i]==i)
+        {
+            return i;
+        }
+        return parent[i]=find(parent[i]);
+    }
+    
+    public void union(int x,int y)
+    {
+        int rootx= find(x);
+        int rooty= find(y);
+        
+        if(rootx!=rooty)
+        {
+            if(rank[rootx]>rank[rooty])
+            {
+                parent[rooty]= rootx;
+            }
+            else if(rank[rootx]<rank[rooty])
+            {
+                parent[rootx]= rooty;
+            }
+            else
+            {
+                parent[rooty]= rootx;
+                rank[rootx]++;
+            }
+        }
+    }
+    
+    public int prov(int[][]mat)
+    {
+        for(int i=0;i<n;i++)
+        {
+            for(int j=i+1;j<n;j++)
+            {
+                if(mat[i][j]==1)
+                {
+                    if(find(i)!=find(j))
+                    {
+                        union(i,j);
+                    }
+                }
+            }
+        }
+        
+        Set<Integer> roots = new HashSet<>();
+        for (int i = 0; i<n; i++) 
+        {
+            roots.add(find(i));
+        }
+        return roots.size();
+    }
+    
+    public static void main(String args[])
+    {
+        Scanner sc= new Scanner(System.in);
+        int n =sc.nextInt();
+        int mat[][] = new int[n][n];
+        
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                mat[i][j]= sc.nextInt();
+            }
+        }
+        DS ds= new DS(n,mat);
+        
+        System.out.println(ds.prov(mat));
+    }
+}
+
+
+You are given an m x n binary matrix grid. An island is a group of 
+1's (representing land) connected 4-directionally (horizontal or vertical.) 
+You may assume all four edges of the grid are surrounded by water.
+The area of an island is the number of cells with a value 1 in the island.
+Return the maximum area of an island in grid. If there is no island, return 0.
+
+Sample test cases
+
+case=1
+input=4 5
+1 1 1 1 0
+1 1 0 1 0
+1 1 0 0 1
+0 0 1 1 1
+output=9
+Explanation: The answer is 9, because the island must be connected 
+4-directionally.
+
+case=2
+input=4 5
+1 1 0 0 0
+1 1 0 0 0
+0 0 1 1 1
+0 0 0 1 1
+output=5
+
+
+
+import java.util.*;
+
+class DSU {
+    int[] parent;
+    int[] size;
+    int m, n;
+
+    DSU(int m, int n) {
+        this.m = m;
+        this.n = n;
+        int len = m * n;
+        parent = new int[len];
+        size = new int[len];
+        for (int i = 0; i < len; i++) {
+            parent[i] = i;
+            size[i] = 1; // initially every cell has area = 1 if it's 1
+        }
+    }
+
+    int find(int x) {
+        if (parent[x] != x)
+            parent[x] = find(parent[x]);
+        return parent[x];
+    }
+
+    void union(int x, int y) {
+        int px = find(x);
+        int py = find(y);
+        if (px != py) {
+            parent[py] = px;
+            size[px] += size[py];
+        }
+    }
+
+    int getMaxArea(int[][] grid) {
+        int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1) {
+                    int index1 = i * n + j;
+                    for (int[] d : dirs) {
+                        int ni = i + d[0];
+                        int nj = j + d[1];
+                        if (ni >= 0 && ni < m && nj >= 0 && nj < n && grid[ni][nj] == 1) {
+                            int index2 = ni * n + nj;
+                            union(index1, index2);
+                        }
+                    }
+                }
+            }
+        }
+
+        int maxArea = 0;
+        for (int i = 0; i < m * n; i++) {
+            if (grid[i / n][i % n] == 1 && find(i) == i) {
+                maxArea = Math.max(maxArea, size[i]);
+            }
+        }
+        return maxArea;
+    }
+}
+
+public class MaxIslandArea {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int m = sc.nextInt(), n = sc.nextInt();
+        int[][] grid = new int[m][n];
+
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                grid[i][j] = sc.nextInt();
+
+        DSU dsu = new DSU(m, n);
+        System.out.println(dsu.getMaxArea(grid));
+    }
+}
+
+
+
+There is a bi-directional graph with n vertices, where each vertex is labeled 
+from 0 to n - 1 (inclusive). The edges in the graph are represented as a 
+2D integer array edges, where each edges[i] = [ui, vi] denotes a bi-directional 
+edge between vertex ui and vertex vi. Every vertex pair is connected by at most 
+one edge, and no vertex has an edge to itself.
+
+You want to determine if there is a valid path that exists from vertex source 
+to vertex destination.
+
+Given edges and the integers n, source, and destination, return true if there 
+is a valid path from source to destination, or false otherwise.
+
+ 
+Input: n = 3, edges = [[0,1],[1,2],[2,0]], source = 0, destination = 2
+Output: true
+Explanation: There are two paths from vertex 0 to vertex 2:
+- 0 → 1 → 2
+- 0 → 2
+
+ 
+Input: n = 6, edges = [[0,1],[0,2],[3,5],[5,4],[4,3]], source = 0, destination = 5
+Output: false
+Explanation: There is no path from vertex 0 to vertex 5.
+
+case=1
+input=3 3
+0 1
+1 2
+2 0
+0 2
+output=true
+
+case=2
+input=6 5
+0 1
+0 2
+3 5
+5 4
+4 3
+0 5
+output=false
+
+
+import java.util.*;
+class DS{
+    int parent[],rank[];
+    DS(int n){
+        parent=new int[n];
+        rank=new int[n];
+        for(int i=0;i<n;i++){
+            parent[i]=i;
+            rank[i]=1;
+        }
+        
+    }
+    int find(int x){
+        if(parent[x]==x){
+            return x;
+        }
+        return parent[x]=find(parent[x]);
+    }
+    void union(int x,int y){
+        int rootx=find(x);
+        int rooty=find(y);
+        if(rootx!=rooty){
+            if(rank[rootx]>rank[rooty]){
+                parent[rooty]=rootx;
+            }
+            else if(rank[rootx]<rank[rooty]){
+                parent[rootx]=rooty;
+            }
+            else if(rank[rootx]==rank[rooty]){
+                parent[rooty]=rootx;
+                rank[rootx]++;
+            }
+            
+        }
+    }
+      boolean edgejoin(int source,int dest){
+        
+        
+        // for(int edge[]:arr){
+        //     int u=edge[0];
+        //     int v=edge[1];
+            
+        //     if(!ds.union(u,v)){
+        //         return false;
+        //     }
+        // }
+        // return true;
+        return find(source)==find(dest);
+      }
+    
+}
+public class test{
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        
+        int n=sc.nextInt();
+        int e=sc.nextInt();
+        int arr[][]=new int[e][2];
+        for(int i=0;i<e;i++){
+            arr[i][0]=sc.nextInt();
+            arr[i][1]=sc.nextInt();
+
+}
+        int source=sc.nextInt();
+        int dest=sc.nextInt();
+        DS ds=new DS(n);
+         for (int[] edge : arr){
+            ds.union(edge[0], edge[1]);
+            }
+        if(ds.edgejoin(source,dest)){
+            System.out.println("true");
+        }
+        else{
+            System.out.println("false");
+        }
+        
+    }
+}
+
+
+
+
