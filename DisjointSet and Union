@@ -831,5 +831,171 @@ public class test{
 }
 
 
+You are given an m x n binary matrix grid, where 0 represents a sea cell 
+and 1 represents a land cell.
+A move consists of walking from one land cell to another 
+adjacent (4-directionally) land cell or walking off the boundary of the grid.
+Return the number of land cells in grid for which we cannot walk off the 
+boundary of the grid in any number of moves.
+
+case=1
+input=4 4
+0 0 0 0
+1 0 1 0
+0 1 1 0
+0 0 0 0
+output=3
+
+Explanation: There are three 1s that are enclosed by 0s, and one 1 that is not 
+enclosed because its on the boundary.
+
+case=2
+input=4 4
+0 1 1 0
+0 0 1 0
+0 0 1 0
+0 0 0 0
+output=0
+
+Explanation: All 1s are either on the boundary or can reach the boundary.
+
+
+// import java.util.*;
+// class DS{
+//     int parent[];
+//     int rank[];
+//     DS(int m,int parent[]){
+//         this.m=m;
+//         this.n=n;
+//         parent=new int[m];
+//         for(int i=0;i<m*n;i++){
+//             parent[i]=i;
+//             rank[i]=1;
+//         }
+        
+//     }
+//     public int find(int i){
+//         if(parent[i]==i){
+//             return i;
+            
+//         }
+//         return parent[i]=find(parent[i]);
+//     }
+//     public void union(int x,int y){
+//         int rootx=find(y);
+//         int rooty=find(y);
+//         if(rootx!=rooty){
+//             if(rank[rootx]>rank[rooty]){
+//                 parent[rooty]=rootx;
+//             }
+//             else if(rank[rootx]<rank[rooty]){
+//                 parent[rootx]=rooty;
+//             }
+//             else{
+//                 parent[rooty]=rootx;
+//             }
+//         }
+//     }
+    
+//     public static int landcells(int arr[],int r,int c){
+//         DF df=new df(r*c+1);
+//         int dummy=r*c;
+        
+        
+//     }
+    
+// }
+// public class test{
+//     public static void main(String[] args){
+//         Scanner sc=new Scanner(System.in);
+//         int m=sc.nextInt();
+//         int n=sc.nextInt();
+//         int arr[]=new int[m][n];
+//         for(int i=0;i<m;i++){
+//             for(int j=0;j<n;j++){
+//                 arr[i][j]=sc.nextInt();
+//             }
+//         }
+//         public static int noOfLandCells(int arr[][]){
+            
+//         }
+//     }
+// }
+
+
+import java.util.*;
+
+public class EnclosedLandCells {
+    
+    public static int numEnclosedLandCells(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        
+        boolean[][] visited = new boolean[m][n];
+
+        // Step 1: Mark all land cells that are connected to the boundary
+        for (int i = 0; i < m; i++) {
+            // first column and last column
+            if (grid[i][0] == 1) dfs(grid, visited, i, 0);
+            if (grid[i][n - 1] == 1) dfs(grid, visited, i, n - 1);
+        }
+
+        for (int j = 0; j < n; j++) {
+            // first row and last row
+            if (grid[0][j] == 1) dfs(grid, visited, 0, j);
+            if (grid[m - 1][j] == 1) dfs(grid, visited, m - 1, j);
+        }
+
+        // Step 2: Count unvisited land cells
+        int count = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1 && !visited[i][j]) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    // DFS to mark all reachable land cells
+    public static void dfs(int[][] grid, boolean[][] visited, int i, int j) {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        if (i < 0 || j < 0 || i >= m || j >= n || grid[i][j] == 0 || visited[i][j]) {
+            return;
+        }
+
+        visited[i][j] = true;
+
+        // Explore 4 directions
+        dfs(grid, visited, i - 1, j);
+        dfs(grid, visited, i + 1, j);
+        dfs(grid, visited, i, j - 1);
+        dfs(grid, visited, i, j + 1);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int m = sc.nextInt();
+        int n = sc.nextInt();
+
+        int[][] grid = new int[m][n];
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                grid[i][j] = sc.nextInt();
+            }
+        }
+
+        int result = numEnclosedLandCells(grid);
+        System.out.println(result);
+    }
+}
+
+
+
 
 
