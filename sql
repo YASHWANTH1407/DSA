@@ -139,4 +139,94 @@ group by e2.manager_id
 
 
 
+/*
+Employee with the second highest salary
+
+case=1
+output=
++---------------+                                                                                                                                     
+| employee_name |                                                                                                                                     
++---------------+                                                                                                                                     
+| Grace Hall    |                                                                                                                                     
++---------------+
+*/
+use fsa1;
+select employee_name from employees order by salary desc limit 1 offset 1;
+
+
+/*
+Departments where the max salary is less than 70000
+
+case=1
+output=
++-----------------+                                                                                                                                   
+| department_name |                                                                                                                                   
++-----------------+                                                                                                                                   
+| HR              |                                                                                                                                   
+| Finance         |                                                                                                                                   
+| Marketing       |                                                                                                                                   
+| Operations      |                                                                                                                                   
++-----------------+
+*/
+use fsa1;
+select department_name from departments d where department_id in
+(select department_id from employees where salary<70000);
+
+
+
+/*
+Employees working in the same department as 'Bob Smith'
+
+case=1
+output=
++----------------+                                                                                                                                    
+| employee_name  |                                                                                                                                    
++----------------+                                                                                                                                    
+| Bob Smith      |                                                                                                                                    
+| David Williams |                                                                                                                                    
++----------------+
+*/
+use fsa1;
+select employee_name from employees where department_id =
+(select department_id from employees where employee_name="Bob Smith");
+
+
+
+/*
+Projects handled by employees who earn more than average
+
+case=1
+output=
++-----------------------+                                                                                                                             
+| project_name          |                                                                                                                             
++-----------------------+                                                                                                                             
+| Financial Audit       |                                                                                                                             
+| Cybersecurity Upgrade |                                                                                                                             
+| Marketing Strategy    |                                                                                                                             
++-----------------------+
+*/
+use fsa1;
+select project_name from projects where employee_id in
+(select employee_id from employees  where salary>(select avg(salary) from employees));
+
+
+/*
+Employees who earn more than their manager
+
+case=1
+output=
++---------------+                                                                                                                                     
+| employee_name |                                                                                                                                     
++---------------+                                                                                                                                     
+| Bob Smith     |                                                                                                                                     
+| Charlie Brown |                                                                                                                                     
+| Eva Davis     |                                                                                                                                     
++---------------+
+*/
+use fsa1;
+select employee_name from employees e 
+join employees e2  on e.employee_id=e2.manager_id
+where e.salary> (select salary from employees e2 )
+
+
 
