@@ -229,4 +229,101 @@ join employees e2  on e.employee_id=e2.manager_id
 where e.salary> (select salary from employees e2 )
 
 
+/*
+Employees hired before their manager
+
+case=1
+output=
++---------------+                                                                                                                                     
+| employee_name |                                                                                                                                     
++---------------+                                                                                                                                     
+| Bob Smith     |                                                                                                                                     
+| Charlie Brown |                                                                                                                                     
+| Eva Davis     |                                                                                                                                     
+| Grace Hall    |                                                                                                                                     
++---------------+
+*/
+use fsa1;
+-- select e.employee_name from employees e where hire_date <
+-- (select hire_date from employees  where employee_id=e.manager_id)
+select e.employee_name from employees e 
+Join employees m on e.manager_id=m.employee_id
+where e.hire_date<m.hire_date
+
+
+
+/*
+Employees working in departments where max salary is below 90000
+
+case=1
+output=
++----------------+                                                                                                                                    
+| employee_name  |                                                                                                                                    
++----------------+                                                                                                                                    
+| Alice Johnson  |                                                                                                                                    
+| Bob Smith      |                                                                                                                                    
+| Charlie Brown  |                                                                                                                                    
+| David Williams |                                                                                                                                    
+| Eva Davis      |                                                                                                                                    
+| Grace Hall     |                                                                                                                                    
+| Henry Clark    |                                                                                                                                    
+| Ivy Lewis      |                                                                                                                                    
+| Jack Miller    |                                                                                                                                    
++----------------+
+*/
+
+use fsa1;
+select employee_name from employees e where department_id in
+(select department_id from employees e2
+group by department_id
+having max(salary)<90000);
+
+
+/*
+Employees with salary greater than all others in their department
+
+case=1
+output=
++---------------+                                                                                                                                     
+| employee_name |                                                                                                                                     
++---------------+                                                                                                                                     
+| Alice Johnson |                                                                                                                                     
+| Bob Smith     |                                                                                                                                     
+| Charlie Brown |                                                                                                                                     
+| Eva Davis     |                                                                                                                                     
+| Frank White   |                                                                                                                                     
+| Ivy Lewis     |                                                                                                                                     
++---------------+
+*/
+use fsa1;
+select employee_name from employees e where salary in
+(select max(salary) from employees  group by department_id );
+-- where e2.employee_id=e.department_id)
+
+
+/*
+Employees with salary less than any other in their department
+
+case=1
+output=
++----------------+                                                                                                                                    
+| employee_name  |                                                                                                                                    
++----------------+                                                                                                                                    
+| David Williams |                                                                                                                                    
+| Grace Hall     |                                                                                                                                    
+| Henry Clark    |                                                                                                                                    
+| Jack Miller    |                                                                                                                                    
++----------------+
+*/
+use fsa1;
+select employee_name from employees where salary in(
+select min(salary) from employees group by department_id)
+
+
+
+
+
+
+
+
 
