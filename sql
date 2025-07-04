@@ -316,9 +316,8 @@ output=
 +----------------+
 */
 use fsa1;
-select employee_name from employees where salary in(
-select min(salary) from employees group by department_id)
-
+select employee_name from employees e where salary <(
+select max(salary) from employees e2 where e2.department_id=e.department_id);
 
 
 
