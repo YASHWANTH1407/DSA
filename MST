@@ -414,6 +414,158 @@ public class test {
     }
 }
 
+You are given an array points representing integer coordinates of some points 
+on a 2D-plane, where points[i] = [xi, yi].
+
+The cost of connecting two points [xi, yi] and [xj, yj] is the manhattan 
+distance between them: |xi - xj| + |yi - yj|, where |val| denotes the absolute 
+value of val.
+
+Return the minimum cost to make all points connected. All points are connected 
+if there is exactly one simple path between any two points.
+
+case=1
+input=5
+0 0
+2 2
+3 10
+5 2
+7 0
+output=20
+
+Explanation: 
+
+We can connect the points as shown above to get the minimum cost of 20.
+Notice that there is a unique path between every pair of points.
+
+case=2
+input=3
+3 12
+-2 5
+-4 1
+output=18
+
+import java.util.*;
+
+class Pair
+{
+    int node,weight;
+    Pair(int weight,int node)
+    {
+        this.node= node;
+        this.weight= weight;
+    }
+}
+class test
+{
+    public static int manhattan(int[] a,int[] b )
+    {
+        return Math.abs(a[0]-b[0])+ Math.abs(a[1]-b[1]);
+    }
+    public static int Prims(int n, List<int[]> points)
+    {
+        boolean visited[] = new boolean[n];
+        PriorityQueue<Pair> pq= new  PriorityQueue<>(Comparator.comparingInt(p->p.weight));
+        
+        pq.add(new Pair(0,0));
+        int tc=0;
+        int eu=0;
+        
+        while(!pq.isEmpty()&& eu<n)
+        {
+            Pair current = pq.poll();
+            int weight = current.weight;
+            int node = current.node;
+
+            if (visited[node])
+                continue;
+
+            visited[node] = true;
+            tc += weight;
+            eu++;
+
+            for (int i=0;i<n; i++) 
+            {
+                if (!visited[i]) 
+                {
+                    int dist = manhattan(points.get(node), points.get(i));
+                    pq.add(new Pair(dist, i));
+                }
+            }
+        }
+        return tc;
+    }
+    public static void main(String args[])
+    {
+        Scanner sc= new Scanner(System.in);
+        int V = sc.nextInt();
+        
+        List<int[]> points= new ArrayList<>();
+        for(int i=0;i<V;i++)
+        {
+            int x= sc.nextInt();
+            int y=sc.nextInt();
+            points.add(new int[]{x,y});
+        }
+        int res= Prims(V,points);
+        
+        System.out.println(res);
+    }
+}
+
+There are n houses in a village. We want to supply water for all the houses 
+by building wells and laying pipes.
+
+For each house i, we can either build a well inside it directly with 
+cost wells[i - 1] (note the -1 due to 0-indexing), or pipe in water from 
+another well to it. The costs to lay pipes between houses are given by the 
+array pipes where each pipes[j] = [house1j, house2j, costj] represents the 
+cost to connect house1j and house2j together using a pipe. Connections are 
+bidirectional, and there could be multiple valid connections between the 
+same two houses with different costs.
+
+Return the minimum total cost to supply water to all houses.
+
+case=1
+input=3
+1 2 2
+2
+1 2 1
+2 3 1
+output=3
+
+Explanation: The image shows the costs of connecting houses using pipes.
+The best strategy is to build a well in the first house with cost 1 and 
+connect the other houses to it with cost 2 so the total cost is 3.
+ 
+case=2
+input=2
+1 1
+2
+1 2 1
+1 2 2
+output=2
+
+Explanation: We can supply water with cost two using one of the three options:
+Option 1:
+  - Build a well inside house 1 with cost 1.
+  - Build a well inside house 2 with cost 1.
+The total cost will be 2.
+Option 2:
+  - Build a well inside house 1 with cost 1.
+  - Connect house 2 with house 1 with cost 1.
+The total cost will be 2.
+Option 3:
+  - Build a well inside house 2 with cost 1.
+  - Connect house 1 with house 2 with cost 1.
+The total cost will be 2.
+Note that we can connect houses 1 and 2 with cost 1 or with cost 2 but we 
+will always choose the cheapest option. 
+
+
+****************************Provide the solution
+
+
 
 
 
